@@ -37,7 +37,7 @@ int main(int argc, const char* argv[])
 	char gameid[4];
 	uint32_t headerCRC;
 
-	// 60 second delay before continuing.
+	// 3 second delay before continuing.
 	for (int i = 0; i < 60; i++) {
 		swiWaitForVBlank();
 	}
