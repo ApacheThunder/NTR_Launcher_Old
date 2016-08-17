@@ -30,6 +30,7 @@
 #include "font.h"
 #include "bgtop.h"
 #include "bgsub.h"
+#include "bgsub2.h"
 
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
@@ -78,6 +79,7 @@ UserInterface::UserInterface (void)
 	// Set up background image
 	swiDecompressLZSSVram ((void*)bgtopTiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)bgsubTiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	
 	vramcpy (&BG_PALETTE[0], bgtopPal, bgtopPalLen);
 	vramcpy (&BG_PALETTE_SUB[0], bgsubPal, bgsubPalLen);
 	u16* bgMapTop = (u16*)SCREEN_BASE_BLOCK(0);
