@@ -37,32 +37,17 @@ int main(int argc, const char* argv[])
 	char gameid[4];
 	uint32_t headerCRC;
 	
-	// 3 second delay before continuing.
+	unsigned int * SCFG_CLK=	(unsigned int*)0x4004004; 
+ 	
+ 	*SCFG_CLK=	*SCFG_CLK | 1; 		
+
+	// 3 second delay before continuing. If new CPU boost code is enabled, load screen is black.
+	// Not sure why that happens. Timing for this is a bit narrower if CPU clock speeds boosted but withen pratical limits for testing purposes.
 	for (int i = 0; i < 60; i++) {
 		swiWaitForVBlank();
 	}
-	
-	// Set arm9 speed to DSi speeds. Only works with patched dev Launcher. Else has no effect.
-	// This is set on arm7 side as well.
-		unsigned int * SCFG_ROM=	(unsigned int*)0x4004000;
-		unsigned int * SCFG_CLK=	(unsigned int*)0x4004004; 
-		unsigned int * SCFG_EXT=	(unsigned int*)0x4004008;
-
-			if(*SCFG_EXT==0) {
-				// Display no text here. Graphics for general status. Text not enabled in this exmaple.		
-				*SCFG_EXT = 0x830F0100;
-			}
-	
-		*SCFG_CLK=	*SCFG_CLK | 1;
-
-		// Attempt to return to NTR mode if in TWL mode. Untested at the moment. Probably doensn't do anything.
-		if(*SCFG_EXT & 0x80000000 != 0)  {
-				if (*SCFG_ROM & 0x03==0x01) {
-					*SCFG_ROM = 0;
-				}
-			}
-
 	// Now using stripped down "launch engine" instead of cheat engine system.
 	runLaunchEngine ();
+
 }
 
