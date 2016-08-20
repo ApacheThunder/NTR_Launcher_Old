@@ -73,9 +73,7 @@ void ResetSlot() {
 	int backup =*SCFG_EXT;
 	*SCFG_EXT=0xFFFFFFFF;
 	//SwitchToTWLCARD();
-	// Disabled for now. Only works if TWL_FIRM boots without a card inserted. Insert card before starting this program. The power on command then works on it's own.
-	// Re-Enable once we can fix that.
-	// PowerOffSlot();
+	PowerOffSlot();
 	PowerOnSlot();
 	//SwitchToNTRCARD();
 	*SCFG_EXT=backup;
@@ -109,16 +107,16 @@ int main(void) {
 	ResetSlot();
 	
 	// Keep the ARM7 mostly idle
-	while (1) {
+		while (1) {
 
-		if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
-		{
-			irqDisable (IRQ_ALL);
-			*((vu32*)0x027FFE34) = (u32)0x06000000;
+			if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
+			{
+				irqDisable (IRQ_ALL);
+				*((vu32*)0x027FFE34) = (u32)0x06000000;
 
-		}
-			swiSoftReset();
-		} 
-		swiWaitForVBlank();
-	}
+			}
+				swiSoftReset();
+			} 
+			swiWaitForVBlank();
+}
 
