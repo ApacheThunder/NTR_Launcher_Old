@@ -27,9 +27,64 @@ void VcountHandler() {
 void VblankHandler(void) {
 }
 
+unsigned int * ROMCTRL=(unsigned int*)0x40001A4; 
+unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
+unsigned int * SCFG_MC=(unsigned int*)0x4004010; 
+unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
+unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
+
+void SwitchToNTRCARD()
+{
+	*SCFG_EXT&=~0x80;
+}
+
+void SwitchToTWLCARD()
+{
+    *SCFG_EXT|=0x80;
+}
+
+void PowerOffSlot()
+{
+	while(*SCFG_MC&0x0C ==  0x0C); 		// wait until state<>3
+	if(*SCFG_MC&0x0C != 0x08) return; 		// exit if state<>2      
+	
+	*SCFG_MC = 0x0C;          		// set state=3 
+	while(*SCFG_MC&0x0C !=  0x00);  // wait until state=0
+}
+
+void PowerOnSlot()
+{
+	while(*SCFG_MC&0x0C ==  0x0C); // wait until state<>3
+	if(*SCFG_MC&0x0C != 0x00) return; //  exit if state<>0
+	
+	*SCFG_MC = 0x04;    // wait 1ms, then set state=1
+	while(*SCFG_MC&0x0C != 0x04);
+	
+	*SCFG_MC = 0x08;    // wait 10ms, then set state=2      
+	while(*SCFG_MC&0x0C != 0x08);
+	
+	*ROMCTRL = 0x20000000; // wait 27ms, then set ROMCTRL=20000000h
+	
+	while(*ROMCTRL&0x8000000 != 0x8000000);
+}
+
+// Moves SCFG change to the ResetSlot function to make this more efficient
+void ResetSlot() {
+	int backup =*SCFG_EXT;
+	*SCFG_EXT=0xFFFFFFFF;
+	//SwitchToTWLCARD();
+	// Disabled for now. Only works if TWL_FIRM boots without a card inserted. Insert card before starting this program. The power on command then works on it's own.
+	// Re-Enable once we can fix that.
+	// PowerOffSlot();
+	PowerOnSlot();
+	//SwitchToNTRCARD();
+	*SCFG_EXT=backup;
+}
+
 //---------------------------------------------------------------------------------
 int main(void) {
 //---------------------------------------------------------------------------------
+	//
 
 	irqInit();
 	fifoInit();
@@ -48,7 +103,11 @@ int main(void) {
 	irqSet(IRQ_VBLANK, VblankHandler);
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT);   
-
+    
+	// Reset Slot command. Works fine when placed right before the idle loop.
+	// Though it also worked before the irgInit/fifoInit. I just chose to put it here. :P
+	ResetSlot();
+	
 	// Keep the ARM7 mostly idle
 	while (1) {
 
@@ -57,27 +116,9 @@ int main(void) {
 			irqDisable (IRQ_ALL);
 			*((vu32*)0x027FFE34) = (u32)0x06000000;
 
-		// if dsi mode is detected try switch back to ntr mode
-		// this may require extended access
-		// from http://problemkaputt.de/gbatek.htm#dsinotes
-		// if ([4004000h] AND 03h)=01h then DSi_mode else NDS_mode
-		// Caution: Below detection won't work with DSi exploits (because they are
-		// usually having the ARM7 SCFG registers disabled - it would be thus better
-		// to do the dection only on ARM9 side as described above, and then forward
-		// the result to ARM7 side).
-		// if ([4004008h] AND 80000000h)=0 then skip_detection_and_assume_NDS_mode
-		// else if ([4004000h] AND 03h)=01h then DSi_mode else NDS_mode
-		unsigned int * SCFG_ROM=	(unsigned int*)0x4004000;
-		unsigned int * SCFG_EXT=	(unsigned int*)0x4004008;
-		if(*SCFG_EXT & 0x80000000 != 0)  {
-			if (*SCFG_ROM & 0x03==0x01) {
-				*SCFG_ROM = 0;
-			}
 		}
 			swiSoftReset();
 		} 
 		swiWaitForVBlank();
 	}
-	
-}
 
