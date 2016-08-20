@@ -109,13 +109,13 @@ int main(void) {
 	// Keep the ARM7 mostly idle
 	while (1) {
 
-			if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
-			{
-				irqDisable (IRQ_ALL);
-				*((vu32*)0x027FFE34) = (u32)0x06000000;
-			}
-			swiSoftReset();
-			}
+		if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
+		{
+			irqDisable (IRQ_ALL);
+			*((vu32*)0x027FFE34) = (u32)0x06000000;
+		}
+		swiSoftReset();
+	}
 
 	swiWaitForVBlank();
 }
