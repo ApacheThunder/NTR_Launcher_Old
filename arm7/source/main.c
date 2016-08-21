@@ -19,6 +19,8 @@
 #include <nds.h>
 #include <nds/arm7/input.h>
 #include <nds/system.h>
+#include <nds/fifocommon.h>
+
 
 void VcountHandler() {
 	inputGetAndSend();
@@ -32,16 +34,6 @@ unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 unsigned int * SCFG_MC=(unsigned int*)0x4004010; 
 unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
 unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
-
-void SwitchToNTRCARD()
-{
-	*SCFG_EXT&=~0x80;
-}
-
-void SwitchToTWLCARD()
-{
-    *SCFG_EXT|=0x80;
-}
 
 void PowerOffSlot()
 {
@@ -72,10 +64,9 @@ void PowerOnSlot()
 void ResetSlot() {
 	int backup =*SCFG_EXT;
 	*SCFG_EXT=0xFFFFFFFF;
-	//SwitchToTWLCARD();
 	PowerOffSlot();
+	fifoSendValue32(FIFO_USER_01, 1);
 	PowerOnSlot();
-	//SwitchToNTRCARD();
 	*SCFG_EXT=backup;
 }
 
@@ -86,6 +77,9 @@ int main(void) {
 
 	irqInit();
 	fifoInit();
+	
+	// Reset Slot command.
+	ResetSlot();
 
 	// read User Settings from firmware
 	readUserSettings();
@@ -102,10 +96,6 @@ int main(void) {
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT);   
     
-	// Reset Slot command. Works fine when placed right before the idle loop.
-	// Though it also worked before the irgInit/fifoInit. I just chose to put it here. :P
-	ResetSlot();
-	
 	// Keep the ARM7 mostly idle
 	while (1) {
 
