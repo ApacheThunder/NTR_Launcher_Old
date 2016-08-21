@@ -37,7 +37,7 @@ unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
 
 void PowerOffSlot()
 {
-	while(*SCFG_MC&0x0C ==  0x0C); 		// wait until state<>3
+	while(*SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
 	if(*SCFG_MC&0x0C != 0x08) return; 		// exit if state<>2      
 	
 	*SCFG_MC = 0x0C;          		// set state=3 
@@ -46,7 +46,7 @@ void PowerOffSlot()
 
 void PowerOnSlot()
 {
-	while(*SCFG_MC&0x0C ==  0x0C); // wait until state<>3
+	while(*SCFG_MC&0x0C !=  0x0C); // wait until state<>3
 	if(*SCFG_MC&0x0C != 0x00) return; //  exit if state<>0
 	
 	*SCFG_MC = 0x04;    // wait 1ms, then set state=1
