@@ -30,26 +30,26 @@
 #include "crc.h"
 #include "version.h"
 
-
+unsigned int * SCFG_MC=(unsigned int*)0x4004010;
+unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
+ 	
 int main(int argc, const char* argv[])
 {
-	u32* cheatDest;
-	int curCheat = 0;
-	char gameid[4];
-	uint32_t headerCRC;
 	
-	// unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
- 	
- 	// No Speed boost for now
-	// *SCFG_CLK=	*SCFG_CLK | 1; 		
+ 	*SCFG_CLK=	*SCFG_CLK | 1; 		
 
-	// 3 second delay before continuing.
-	for (int i = 0; i < 60; i++) {
+	fifoWaitValue32(FIFO_USER_01);
+	
+	for (int i = 0; i < 20; i++) {
 		swiWaitForVBlank();
 	}
-	// Now using stripped down "launch engine" instead of cheat engine system.
-	fifoWaitValue32(FIFO_USER_01);
-	runLaunchEngine ();
+	
+	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
+	if(*SCFG_MC == 0x11) { 
+	// Do nothing. Card init fails and code from NitroHax that fixes this doesn't work here yet.
+	} else {
+		runLaunchEngine ();
+	}
 
 }
 

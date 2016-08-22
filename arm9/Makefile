@@ -127,6 +127,9 @@ $(ARM9ELF)	:	$(OFILES)
 bgtop.s			:	../$(IMAGES)/bgtop.bmp
 	grit	$< -gB4 -gzl -fts -o $@ -q
 	
+bgtop2.s			:	../$(IMAGES)/bgtop2.bmp
+	grit	$< -gB4 -gzl -fts -o $@ -q
+
 bgsub.s			:	../$(IMAGES)/bgsub.bmp
 	grit	$< -gB4 -gzl -fts -o $@ -q
 

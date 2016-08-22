@@ -35,17 +35,22 @@ unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
 unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
 
-void PowerOffSlot()
-{
+// Merged Power on and Power off slot sequence. Don't need them seperate for now.
+void ResetSlot() {
+	int backup =*SCFG_EXT;
+	*SCFG_EXT=0xFFFFFFFF;
+
+	// Power off Slot
 	while(*SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
 	if(*SCFG_MC&0x0C != 0x08) return; 		// exit if state<>2      
 	
 	*SCFG_MC = 0x0C;          		// set state=3 
 	while(*SCFG_MC&0x0C !=  0x00);  // wait until state=0
-}
 
-void PowerOnSlot()
-{
+	// Tell Arm9 it finished slot power off
+	fifoSendValue32(FIFO_USER_01, 1);
+
+	// Power On Slot
 	while(*SCFG_MC&0x0C !=  0x0C); // wait until state<>3
 	if(*SCFG_MC&0x0C != 0x00) return; //  exit if state<>0
 	
@@ -58,26 +63,15 @@ void PowerOnSlot()
 	*ROMCTRL = 0x20000000; // wait 27ms, then set ROMCTRL=20000000h
 	
 	while(*ROMCTRL&0x8000000 != 0x8000000);
-}
-
-// Moves SCFG change to the ResetSlot function to make this more efficient
-void ResetSlot() {
-	int backup =*SCFG_EXT;
-	*SCFG_EXT=0xFFFFFFFF;
-	PowerOffSlot();
-	fifoSendValue32(FIFO_USER_01, 1);
-	PowerOnSlot();
+	
 	*SCFG_EXT=backup;
 }
 
-//---------------------------------------------------------------------------------
 int main(void) {
-//---------------------------------------------------------------------------------
-	//
 
 	irqInit();
 	fifoInit();
-	
+
 	// Reset Slot command.
 	ResetSlot();
 
@@ -90,15 +84,15 @@ int main(void) {
 	SetYtrigger(80);
 
 	installSystemFIFO();
+
 	
 	irqSet(IRQ_VCOUNT, VcountHandler);
 	irqSet(IRQ_VBLANK, VblankHandler);
 
-	irqEnable( IRQ_VBLANK | IRQ_VCOUNT);   
-    
+	irqEnable( IRQ_VBLANK | IRQ_VCOUNT);
+
 	// Keep the ARM7 mostly idle
 	while (1) {
-
 		if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
 		{
 			irqDisable (IRQ_ALL);
@@ -106,7 +100,6 @@ int main(void) {
 		}
 		swiSoftReset();
 	}
-
 	swiWaitForVBlank();
 }
 

@@ -29,13 +29,13 @@
 
 #include "font.h"
 #include "bgtop.h"
+#include "bgtop2.h"
 #include "bgsub.h"
 
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
 #define CONSOLE_SUB_START_ROW 24
 #define MAP_SIZE 1024
-
 
 using namespace std;
 
@@ -54,6 +54,9 @@ void vramcpy (void* dest, const void* src, int size)
 
 UserInterface::UserInterface (void) 
 {
+	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
+	// Load alternate UI with Error screen if slot-1 is ejected
+	if(*SCFG_MC == 0x11) {
 	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE);
 	// BG0 = backdrop
 	// BG1 = text box background & border
@@ -76,15 +79,52 @@ UserInterface::UserInterface (void)
 	REG_BG2CNT_SUB = BG_MAP_BASE(4) | BG_COLOR_16 | BG_TILE_BASE(6) | BG_PRIORITY(0);
 	
 	// Set up background image
-	swiDecompressLZSSVram ((void*)bgtopTiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+ 	swiDecompressLZSSVram ((void*)bgtop2Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)bgsubTiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy (&BG_PALETTE[0], bgtop2Pal, bgtop2PalLen);
+	vramcpy (&BG_PALETTE_SUB[0], bgsubPal, bgsubPalLen);
+	u16* bgMapTop = (u16*)SCREEN_BASE_BLOCK(0);
+	u16* bgMapSub = (u16*)SCREEN_BASE_BLOCK_SUB(0);
+		for (int i = 0; i < CONSOLE_SCREEN_WIDTH*CONSOLE_SCREEN_HEIGHT; i++) {
+			bgMapTop[i] = (u16)i;
+			bgMapSub[i] = (u16)i;
+		}
+
+	} else {
+	
+	// Load Screen UI for when slot is not ejected.
+	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE);
+	// BG0 = backdrop
+	// BG1 = text box background & border
+	// BG2 = text
+	vramSetBankA (VRAM_A_MAIN_BG_0x06000000);
+	REG_BG0CNT = BG_MAP_BASE(0) | BG_COLOR_16 | BG_TILE_BASE(2) | BG_PRIORITY(2);
+	REG_BG1CNT = BG_MAP_BASE(2) | BG_COLOR_16 | BG_TILE_BASE(4) | BG_PRIORITY(1);
+	REG_BG2CNT = BG_MAP_BASE(4) | BG_COLOR_16 | BG_TILE_BASE(6) | BG_PRIORITY(0);
+	BG_PALETTE[0]=0;   
+	BG_PALETTE[255]=0xffff;
+
+	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE | 
+		DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE | DISPLAY_SPR_ACTIVE | DISPLAY_SPR_1D);
+	// BG0 = backdrop
+	// BG1 = scrollbar & highlights
+	// BG2 = text
+	vramSetBankC (VRAM_C_SUB_BG_0x06200000);
+	REG_BG0CNT_SUB = BG_MAP_BASE(0) | BG_COLOR_16 | BG_TILE_BASE(2) | BG_PRIORITY(2);
+	REG_BG1CNT_SUB = BG_MAP_BASE(2) | BG_COLOR_16 | BG_TILE_BASE(4) | BG_PRIORITY(1);
+	REG_BG2CNT_SUB = BG_MAP_BASE(4) | BG_COLOR_16 | BG_TILE_BASE(6) | BG_PRIORITY(0);
+	
+	// Set up background image
+ 	swiDecompressLZSSVram ((void*)bgtopTiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)bgsubTiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy (&BG_PALETTE[0], bgtopPal, bgtopPalLen);
 	vramcpy (&BG_PALETTE_SUB[0], bgsubPal, bgsubPalLen);
 	u16* bgMapTop = (u16*)SCREEN_BASE_BLOCK(0);
 	u16* bgMapSub = (u16*)SCREEN_BASE_BLOCK_SUB(0);
-	for (int i = 0; i < CONSOLE_SCREEN_WIDTH*CONSOLE_SCREEN_HEIGHT; i++) {
-		bgMapTop[i] = (u16)i;
-		bgMapSub[i] = (u16)i;
+		for (int i = 0; i < CONSOLE_SCREEN_WIDTH*CONSOLE_SCREEN_HEIGHT; i++) {
+			bgMapTop[i] = (u16)i;
+			bgMapSub[i] = (u16)i;
+		}
 	}
 }
 
