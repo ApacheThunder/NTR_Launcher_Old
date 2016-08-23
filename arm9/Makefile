@@ -130,6 +130,9 @@ bgtop.s			:	../$(IMAGES)/bgtop.bmp
 bgtop2.s			:	../$(IMAGES)/bgtop2.bmp
 	grit	$< -gB4 -gzl -fts -o $@ -q
 
+bgtop3.s			:	../$(IMAGES)/bgtop3.bmp
+	grit	$< -gB4 -gzl -fts -o $@ -q
+
 bgsub.s			:	../$(IMAGES)/bgsub.bmp
 	grit	$< -gB4 -gzl -fts -o $@ -q
 

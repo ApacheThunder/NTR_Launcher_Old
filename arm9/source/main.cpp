@@ -30,6 +30,7 @@
 #include "crc.h"
 #include "version.h"
 
+unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
  	
@@ -47,8 +48,15 @@ int main(int argc, const char* argv[])
 	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
 	if(*SCFG_MC == 0x11) { 
 	// Do nothing. Card init fails and code from NitroHax that fixes this doesn't work here yet.
-	} else {
-		runLaunchEngine ();
+	} else { 
+		// SCFG_EXT is never actually all zero in NTR mode (just not readable in NTR mode).
+		// If it reports as zero that means bit31 was not patched out.
+		// We'll indicate to the user that they have not patched it out correctly.
+		if(*SCFG_EXT == 0x00000000) {
+			// Do nothing
+		} else {
+				runLaunchEngine ();
+			}
 	}
 
 }
