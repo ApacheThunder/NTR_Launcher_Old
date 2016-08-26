@@ -138,8 +138,8 @@ Jumps to the ARM9 NDS binary in sync with the display and ARM7
 Written by Darkain, modified by Chishm
 --------------------------------------------------------------------------*/
 void arm9_main (void) {
-	unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+	// unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
+	// unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 
 	register int i;
 	
@@ -228,8 +228,8 @@ void arm9_main (void) {
 		}
 	}
 
-	*SCFG_CLK=0x80;
-	*SCFG_EXT=0x80000000;
+	// *SCFG_CLK=0x80;
+	// *SCFG_EXT=0x80000000;
 		
 	// wait for vblank then boot
 	while(REG_VCOUNT!=191);

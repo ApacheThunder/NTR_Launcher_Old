@@ -53,13 +53,7 @@ void vramcpy (void* dest, const void* src, int size)
 	}
 }
 
-UserInterface::UserInterface (void) {
-	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-
-	// Load alternate UI with an error occured. Currently 2 error screns and one normal.
-	// (normal screen always last in this chain)
-	if(*SCFG_MC == 0x11) {
+void ErrorNoCard() {
 	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE);
 	// BG0 = backdrop
 	// BG1 = text box background & border
@@ -92,8 +86,9 @@ UserInterface::UserInterface (void) {
 			bgMapTop[i] = (u16)i;
 			bgMapSub[i] = (u16)i;
 		}
-	} else {
-	if(*SCFG_EXT == 0x00000000) {
+}
+
+void ErrorNoBit31() {
 	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE);
 	
 	vramSetBankA (VRAM_A_MAIN_BG_0x06000000);
@@ -121,9 +116,10 @@ UserInterface::UserInterface (void) {
 			bgMapTop[i] = (u16)i;
 			bgMapSub[i] = (u16)i;
 		}
-	} else {
-	
-	// Load Screen UI for when slot is not ejected.
+}
+ 
+ void NormalUI() {
+ // Load Screen UI for when slot is not ejected.
 	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE | DISPLAY_BG1_ACTIVE | DISPLAY_BG2_ACTIVE);
 	// BG0 = backdrop
 	// BG1 = text box background & border
@@ -155,15 +151,27 @@ UserInterface::UserInterface (void) {
 		for (int i = 0; i < CONSOLE_SCREEN_WIDTH*CONSOLE_SCREEN_HEIGHT; i++) {
 			bgMapTop[i] = (u16)i;
 			bgMapSub[i] = (u16)i;
-			}
 		}
-	}
-
 }
 
 
- UserInterface::~UserInterface () 
-{
-// UI elements stripped out. Basic load screen splash only.
+UserInterface::UserInterface (void) {
+	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
+	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+
+	// Load alternate UI with an error occured. Currently 2 error screns and one normal.
+	// (normal screen always last in this chain)
+	if(*SCFG_MC == 0x11) {
+		ErrorNoCard();
+		} else { 
+			if(*SCFG_EXT == 0x0) { 
+				ErrorNoBit31();
+			} else {
+				NormalUI(); } 
+		}
 }
 
+ UserInterface::~UserInterface () {
+ }
+
+ 
