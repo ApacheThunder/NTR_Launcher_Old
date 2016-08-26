@@ -224,6 +224,10 @@ void arm7_startBinary (void)
 // Main function
 
 void arm7_main (void) {
+	
+	// unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
+	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+	
 	int errorCode;
 	
 	// Wait for ARM9 to at least start
@@ -244,6 +248,8 @@ void arm7_main (void) {
 	
 	debugOutput (ERR_STS_HOOK_BIN);
 
+	*SCFG_EXT=0x80000000;
+	
 	arm7_startBinary();
 	
 	return;
