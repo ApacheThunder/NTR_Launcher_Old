@@ -225,8 +225,8 @@ void arm7_startBinary (void)
 
 void arm7_main (void) {
 	
-	// unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
-	// unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+	unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
 	
 	int errorCode;
 	
@@ -248,7 +248,10 @@ void arm7_main (void) {
 	
 	debugOutput (ERR_STS_HOOK_BIN);
 
-	// *SCFG_EXT=0x80000000;
+	// Locks bit31 again. SCFG_EXT must be set to zero on arm9 for this to work.
+	*SCFG_EXT=0x80000000;
+	// Normally reads as 0x80 in NTR mode. That's probably normal so I won't touch it.
+	// *SCFG_CLK=0x0;
 	
 	arm7_startBinary();
 	
