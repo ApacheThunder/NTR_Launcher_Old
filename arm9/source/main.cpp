@@ -30,12 +30,11 @@
 #include "crc.h"
 #include "version.h"
 
-// unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
-unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-unsigned int * SCFG_MC=(unsigned int*)0x4004010;
  	
 int main(int argc, const char* argv[])
 {
+	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 
 	fifoWaitValue32(FIFO_USER_01);
 	

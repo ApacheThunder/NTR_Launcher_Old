@@ -138,6 +138,7 @@ Jumps to the ARM9 NDS binary in sync with the display and ARM7
 Written by Darkain, modified by Chishm
 --------------------------------------------------------------------------*/
 void arm9_main (void) {
+
 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 
 	register int i;
@@ -227,9 +228,9 @@ void arm9_main (void) {
 		}
 	}
 
-	// Sets SCFG_EXT to zero. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
+	// Sets SCFG_EXT to normal. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
 	// So this will help fix compatibility issues with games that have issue with the new patch.
-	*SCFG_EXT=0x0;
+	*SCFG_EXT=0x02000000;
 
 	// wait for vblank then boot
 	while(REG_VCOUNT!=191);

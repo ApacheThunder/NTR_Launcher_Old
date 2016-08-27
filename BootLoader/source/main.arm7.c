@@ -226,7 +226,7 @@ void arm7_startBinary (void)
 void arm7_main (void) {
 	
 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-	unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
+	// unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
 	
 	int errorCode;
 	
