@@ -38,7 +38,8 @@ unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
 // Merged Power on and Power off slot sequence. Don't need them seperate for now.
 void ResetSlot() {
 	int backup =*SCFG_EXT;
-	*SCFG_EXT=0xFFFFFFFF;
+	// use 0x82050100 instead if your app uses SD access
+	*SCFG_EXT=0x82000000;
 
 	// Power off Slot
 	while(*SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
