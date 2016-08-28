@@ -30,18 +30,28 @@
 #include "crc.h"
 #include "version.h"
 
- 	
-int main(int argc, const char* argv[])
-{
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
-
-	fifoWaitValue32(FIFO_USER_01);
-	
-	for (int i = 0; i < 20; i++) {
+// Waits for a preset amount of time then waits for arm7 to send fifo for FIFO_USER_01
+// This means it has powered off slot and has continued the card reset.
+// This ensures arm9 doesn't attempt to init card too soon when it's not ready.
+void WaitForSlot() {
+	// Waits for arm7 to power off slot before continuing
+	fifoWaitValue32(FIFO_USER_01);		
+	for (int i = 0; i < 15; i++) {
 		swiWaitForVBlank();
 	}
+}
+
+int main(int argc, const char* argv[])
+{
 	
+ 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
+	
+	// Tell Arm7 to finish up
+	// fifoSendValue32(FIFO_USER_02, 1);	
+
+	WaitForSlot();
+
 	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
 	if(*SCFG_MC == 0x11) { 
 	// Do nothing. Card init fails and code from NitroHax that fixes this doesn't work here yet.

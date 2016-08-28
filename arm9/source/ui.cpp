@@ -174,4 +174,3 @@ UserInterface::UserInterface (void) {
  UserInterface::~UserInterface () {
  }
 
- 

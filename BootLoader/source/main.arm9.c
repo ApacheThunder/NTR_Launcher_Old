@@ -1,4 +1,4 @@
- /*
+/*
  main.arm9.c
  
  By Michael Chisholm (Chishm)
@@ -220,7 +220,7 @@ void arm9_main (void) {
 	arm9_stateFlag = ARM9_READY;
 	while ( arm9_stateFlag != ARM9_BOOTBIN ) {
 		if (arm9_stateFlag == ARM9_DISPERR) {
-			// Re-enable for debug purposes. But for now it's not really that informative to the enduser. :P
+			// Re-enable for debug purposes. But for not it's not really that informative to the enduser. :P
 			// arm9_errorOutput (arm9_errorCode, arm9_errorClearBG);
 			if ( arm9_stateFlag == ARM9_DISPERR) {
 				arm9_stateFlag = ARM9_READY;
@@ -228,14 +228,20 @@ void arm9_main (void) {
 		}
 	}
 
+	// wait for vblank then boot
+	while(REG_VCOUNT!=191);
+	while(REG_VCOUNT==191);
+	
+	u32 first = *(u32*)(0x27FFE34);
+	
+	//arm9_errorOutput (*(u32*)(first), true);
+
+	void (*foo)() = *(u32*)(0x27FFE24);
+
 	// Sets SCFG_EXT to normal. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
 	// So this will help fix compatibility issues with games that have issue with the new patch.
 	*SCFG_EXT=0x02000000;
 
-	// wait for vblank then boot
-	while(REG_VCOUNT!=191);
-	while(REG_VCOUNT==191);
-	// Test code to reset SCFG back to NTR values and restoring bit31
-	resetCpu();
+	foo();
 }
 

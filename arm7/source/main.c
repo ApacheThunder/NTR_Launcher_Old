@@ -29,18 +29,17 @@ void VcountHandler() {
 void VblankHandler(void) {
 }
 
-unsigned int * ROMCTRL=(unsigned int*)0x40001A4; 
-unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
-unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
-unsigned int * SCFG_MC=(unsigned int*)0x4004010; 
-unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
-
 // Merged Power on and Power off slot sequence. Don't need them seperate for now.
 void ResetSlot() {
-	int backup =*SCFG_EXT;
-	// use 0x82050100 instead if your app uses SD access
-	*SCFG_EXT=0x82000000;
+	unsigned int * ROMCTRL=(unsigned int*)0x40001A4; 
+	unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
+	unsigned int * SCFG_MC=(unsigned int*)0x4004010; 
+	unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
+	unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
 
+	int backup =*SCFG_EXT;
+	*SCFG_EXT=0x82000000;
+	
 	// Power off Slot
 	while(*SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
 	if(*SCFG_MC&0x0C != 0x08) return; 		// exit if state<>2      
@@ -48,8 +47,11 @@ void ResetSlot() {
 	*SCFG_MC = 0x0C;          		// set state=3 
 	while(*SCFG_MC&0x0C !=  0x00);  // wait until state=0
 
-	// Tell Arm9 it finished slot power off
+	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
 	fifoSendValue32(FIFO_USER_01, 1);
+
+	// Wait for arm9 one more time.
+	// fifoWaitValue32(FIFO_USER_02);
 
 	// Power On Slot
 	while(*SCFG_MC&0x0C !=  0x0C); // wait until state<>3

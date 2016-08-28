@@ -1,2 +1,11 @@
 *.cia
 *.nds
+*.o
+*.arm7
+Thumbs.db
+*.arm9
+*.elf
+*.d
+*.map
+arm9/data/load.bin
+BootLoader/load.bin
