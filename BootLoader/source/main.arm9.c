@@ -54,6 +54,7 @@ arm9_errorOutput
 Displays an error code on screen.
 Written by Chishm
 --------------------------------------------------------------------------*/
+/* Re-enable for debug purposes
 static void arm9_errorOutput (u32 code, bool clearBG) {
 	int i, j, k;
 	u16 colour;
@@ -129,6 +130,7 @@ static void arm9_errorOutput (u32 code, bool clearBG) {
 		}
 	}		
 }
+*/
 
 /*-------------------------------------------------------------------------
 arm9_main
@@ -220,7 +222,7 @@ void arm9_main (void) {
 	arm9_stateFlag = ARM9_READY;
 	while ( arm9_stateFlag != ARM9_BOOTBIN ) {
 		if (arm9_stateFlag == ARM9_DISPERR) {
-			arm9_errorOutput (arm9_errorCode, arm9_errorClearBG);
+			// arm9_errorOutput (arm9_errorCode, arm9_errorClearBG);
 			if ( arm9_stateFlag == ARM9_DISPERR) {
 				arm9_stateFlag = ARM9_READY;
 			}
@@ -237,7 +239,7 @@ void arm9_main (void) {
 	
 	u32 first = *(u32*)(0x27FFE34);
 	
-	arm9_errorOutput (*(u32*)(first), true);
+	// arm9_errorOutput (*(u32*)(first), true);
 
 	void (*foo)() = *(u32*)(0x27FFE24);
 
