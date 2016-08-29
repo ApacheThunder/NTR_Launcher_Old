@@ -36,7 +36,7 @@
 void WaitForSlot() {
 	// Waits for arm7 to power off slot before continuing
 	fifoWaitValue32(FIFO_USER_01);		
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < 80; i++) {
 		swiWaitForVBlank();
 	}
 }
@@ -47,9 +47,6 @@ int main(int argc, const char* argv[])
  	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 	
-	// Tell Arm7 to finish up
-	// fifoSendValue32(FIFO_USER_02, 1);	
-
 	WaitForSlot();
 
 	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
