@@ -27,7 +27,6 @@
 #include "ui.h"
 #include "bios_decompress_callback.h"
 
-#include "font.h"
 #include "bgtop.h"
 #include "bgtop2.h"
 #include "bgtop3.h"

@@ -139,34 +139,6 @@ bgsub.s			:	../$(IMAGES)/bgsub.bmp
 bgsub2.s			:	../$(IMAGES)/bgsub2.bmp
 	grit	$< -gB4 -gzl -fts -o $@ -q
 
-cursor.s		:	../$(IMAGES)/cursor.bmp
-	grit	$< -gB4 -fts -Mw8 -Mh4 -o $@ -q
-
-font.s			:	../$(IMAGES)/font.bmp
-	grit	$< -gB4 -gzl -fts -o font.s -q
-
-button_go.s		:	../$(IMAGES)/button_go.bmp
-	grit	$< -gB4 -fts -Mw16 -Mh4 -o $@ -q
-
-button_on.s		:	../$(IMAGES)/button_on.bmp
-	grit	$< -gB4 -fts -Mw30 -Mh2 -o $@ -q
-
-button_off.s	:	../$(IMAGES)/button_off.bmp
-	grit	$< -gB4 -fts -Mw30 -Mh2 -o $@ -q
-
-button_folder.s	:	../$(IMAGES)/button_folder.bmp
-	grit	$< -gB4 -fts -Mw30 -Mh2 -o $@ -q
-
-button_file.s	:	../$(IMAGES)/button_file.bmp
-	grit	$< -gB4 -fts -Mw30 -Mh2 -o $@ -q
-
-scrollbar.s		:	../$(IMAGES)/scrollbar.bmp
-	grit	$< -gB4 -Mw2 -Mh2 -fts -o scrollbar.s -q
-
-textbox.s		:	../$(IMAGES)/textbox.bmp
-	grit	$< -gB4 -fts -o textbox.s -q
-
-
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data 
 #---------------------------------------------------------------------------------
