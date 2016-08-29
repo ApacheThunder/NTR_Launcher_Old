@@ -136,6 +136,9 @@ bgtop3.s			:	../$(IMAGES)/bgtop3.bmp
 bgsub.s			:	../$(IMAGES)/bgsub.bmp
 	grit	$< -gB4 -gzl -fts -o $@ -q
 
+bgsub2.s			:	../$(IMAGES)/bgsub2.bmp
+	grit	$< -gB4 -gzl -fts -o $@ -q
+
 cursor.s		:	../$(IMAGES)/cursor.bmp
 	grit	$< -gB4 -fts -Mw8 -Mh4 -o $@ -q
 

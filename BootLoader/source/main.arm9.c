@@ -54,6 +54,8 @@ arm9_errorOutput
 Displays an error code on screen.
 Written by Chishm
 --------------------------------------------------------------------------*/
+// Re-Enable for debug version
+/*
 static void arm9_errorOutput (u32 code, bool clearBG) {
 	int i, j, k;
 	u16 colour;
@@ -129,6 +131,7 @@ static void arm9_errorOutput (u32 code, bool clearBG) {
 		}
 	}		
 }
+*/
 
 /*-------------------------------------------------------------------------
 arm9_main
@@ -200,12 +203,12 @@ void arm9_main (void) {
 	dmaFill((void*)&arm9_BLANK_RAM, (void*)0x04001000, 0x56);  //clear sub  display registers
 	dmaFill((void*)&arm9_BLANK_RAM, VRAM_A,  256*1024);		// Banks A, B
 	dmaFill((void*)&arm9_BLANK_RAM, VRAM_D,  272*1024);		// Banks D, E, F, G, H, I
-
 	REG_DISPSTAT = 0;
 	videoSetMode(0);
 	videoSetModeSub(0);
 	VRAM_A_CR = 0;
 	VRAM_B_CR = 0;
+	
 // Don't mess with the VRAM used for execution
 //	VRAM_C_CR = 0;
 	VRAM_D_CR = 0;
@@ -216,21 +219,22 @@ void arm9_main (void) {
 	VRAM_I_CR = 0;
 	REG_POWERCNT  = 0x820F;
 
+	// Sets SCFG_EXT to normal. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
+	// So this will help fix compatibility issues with games that have issue with the new patch.
+	*SCFG_EXT=0x02000000;
+
 	// set ARM9 state to ready and wait for it to change again
 	arm9_stateFlag = ARM9_READY;
+	
 	while ( arm9_stateFlag != ARM9_BOOTBIN ) {
 		if (arm9_stateFlag == ARM9_DISPERR) {
-			// Re-enable for debug purposes. But for now it's not really that informative to the enduser. :P
-			// arm9_errorOutput (arm9_errorCode, arm9_errorClearBG);
+			//Re-enable for debugging.
+			//arm9_errorOutput (arm9_errorCode, arm9_errorClearBG);
 			if ( arm9_stateFlag == ARM9_DISPERR) {
 				arm9_stateFlag = ARM9_READY;
 			}
 		}
 	}
-
-	// Sets SCFG_EXT to normal. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
-	// So this will help fix compatibility issues with games that have issue with the new patch.
-	*SCFG_EXT=0x02000000;
 
 	// wait for vblank then boot
 	while(REG_VCOUNT!=191);
