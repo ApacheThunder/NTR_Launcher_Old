@@ -30,13 +30,15 @@
 #include "crc.h"
 #include "version.h"
 
- 	
-int main(int argc, const char* argv[])
-{
+ 
+int main(void) {
+
 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
-
+	
 	fifoWaitValue32(FIFO_USER_01);
+	
+	main_ui();
 	
 	for (int i = 0; i < 80; i++) {
 		swiWaitForVBlank();

@@ -33,7 +33,7 @@ unsigned int * ROMCTRL=(unsigned int*)0x40001A4;
 unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
 unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
 unsigned int * SCFG_MC=(unsigned int*)0x4004010; 
-unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
+
 
 // Merged Power on and Power off slot sequence. Don't need them seperate for now.
 void ResetSlot() {

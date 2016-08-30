@@ -89,4 +89,5 @@ clean:
 	$(MAKE) -C arm7 clean
 	$(MAKE) -C BootLoader clean
 	rm -f arm9/data/load.bin
+	rm -f arm9/source/version.h
 	rm -f $(TARGET).ds.gba $(TARGET).nds $(TARGET).arm7 $(TARGET).arm9

@@ -16,8 +16,5 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <nds/ndstypes.h>
-#include <stdarg.h>
-
-void main_ui (void);
+void BootSplashNormal (void);
 
