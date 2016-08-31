@@ -26,9 +26,8 @@
 
 #include "bgtop.h"
 #include "bgtop2.h"
-#include "bgtop3.h"
 #include "bgsub.h"
-#include "bgsub2.h"
+
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
 
@@ -45,35 +44,23 @@ void vramcpy (void* dest, const void* src, int size)
 
 
 void ErrorNoCard() {
- 	swiDecompressLZSSVram ((void*)bgtop2Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)bgsub2Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy (&BG_PALETTE[0], bgtop2Pal, bgtop2PalLen);
-	vramcpy (&BG_PALETTE_SUB[0], bgsub2Pal, bgsub2PalLen);
+ 	swiDecompressLZSSVram ((void*)bgtopTiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)bgsubTiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy (&BG_PALETTE[0], bgtopPal, bgtopPalLen);
+	vramcpy (&BG_PALETTE_SUB[0], bgsubPal, bgsubPalLen);
 	u16* bgMapTop2 = (u16*)SCREEN_BASE_BLOCK(0);
 	u16* bgMapSub2 = (u16*)SCREEN_BASE_BLOCK_SUB(0);
 		for (int i = 0; i < CONSOLE_SCREEN_WIDTH*CONSOLE_SCREEN_HEIGHT; i++) {
 			bgMapTop2[i] = (u16)i;
 			bgMapSub2[i] = (u16)i;
 		}
+	for (int i = 0; i < 320; i++) { swiWaitForVBlank(); }
 }
 
 void ErrorNoBit31() {
- 	swiDecompressLZSSVram ((void*)bgtop3Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)bgsub2Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy (&BG_PALETTE[0], bgtop3Pal, bgtop3PalLen);
-	vramcpy (&BG_PALETTE_SUB[0], bgsub2Pal, bgsub2PalLen);
-	u16* bgMapTop = (u16*)SCREEN_BASE_BLOCK(0);
-	u16* bgMapSub = (u16*)SCREEN_BASE_BLOCK_SUB(0);
-		for (int i = 0; i < CONSOLE_SCREEN_WIDTH*CONSOLE_SCREEN_HEIGHT; i++) {
-			bgMapTop[i] = (u16)i;
-			bgMapSub[i] = (u16)i;
-		}
-}
-
- void NormalUI() {
- 	swiDecompressLZSSVram ((void*)bgtopTiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+ 	swiDecompressLZSSVram ((void*)bgtop2Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)bgsubTiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy (&BG_PALETTE[0], bgtopPal, bgtopPalLen);
+	vramcpy (&BG_PALETTE[0], bgtop2Pal, bgtop2PalLen);
 	vramcpy (&BG_PALETTE_SUB[0], bgsubPal, bgsubPalLen);
 	u16* bgMapTop = (u16*)SCREEN_BASE_BLOCK(0);
 	u16* bgMapSub = (u16*)SCREEN_BASE_BLOCK_SUB(0);
@@ -81,6 +68,7 @@ void ErrorNoBit31() {
 			bgMapTop[i] = (u16)i;
 			bgMapSub[i] = (u16)i;
 		}
+	for (int i = 0; i < 320; i++) { swiWaitForVBlank(); }
 }
 
 void main_ui() {
@@ -96,18 +84,11 @@ void main_ui() {
 	BG_PALETTE[0]=0;   
 	BG_PALETTE[255]=0xffff;
 
+	// Boot Splash will always play.
+	BootSplashNormal();
+	
 	// Load alternate UI with an error occured. Currently 2 error screns and one normal.
-	// (normal screen always last in this chain)
-	if(*SCFG_MC == 0x11) {
-		ErrorNoCard();
-		} else { 
-			if(*SCFG_EXT == 0x0) { 
-				// No bi31 error screen for this test. Using Boot Splash here for testing in emulator.
-				// ErrorNoBit31();
-				BootSplashNormal();
-				} else {
-					BootSplashNormal();
-				}
-		}
+	if(*SCFG_EXT == 0x0) { ErrorNoBit31(); }
+	if(*SCFG_MC == 0x11) { ErrorNoCard(); }
 }
 

@@ -19,6 +19,7 @@ IMAGES		:=	graphics
 SOURCES		:=	source $(IMG_DATA)
 INCLUDES	:=	include
 DATA		:=	data
+MUSIC       :=  music
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -40,7 +41,7 @@ LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 #---------------------------------------------------------------------------------
 # any extra libraries we wish to link with the project
 #---------------------------------------------------------------------------------
-LIBS	:= -lfat -lnds9
+LIBS	:= -lmm9 -lnds9
  
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
@@ -59,15 +60,18 @@ export ARM9BIN	:=	$(TOPDIR)/$(TARGET).arm9
 export ARM9ELF	:=	$(CURDIR)/$(TARGET).arm9.elf
 export DEPSDIR := $(CURDIR)/$(BUILD)
 
+export AUDIOFILES	:=	$(foreach dir,$(notdir $(wildcard $(MUSIC)/*.*)),$(CURDIR)/$(MUSIC)/$(dir))
+
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 					$(foreach dir,$(DATA),$(CURDIR)/$(dir))
  
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.s)))
-BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*)))
+BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*))) soundbank.bin
 
 BMPFILES	:=	$(foreach dir,$(IMAGES),$(notdir $(wildcard $(dir)/*.bmp)))
+
 
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
@@ -130,13 +134,7 @@ bgtop.s			:	../$(IMAGES)/bgtop.bmp
 bgtop2.s		:	../$(IMAGES)/bgtop2.bmp
 	grit	$< -gB8 -gzl -fts -o $@ -q
 
-bgtop3.s		:	../$(IMAGES)/bgtop3.bmp
-	grit	$< -gB8 -gzl -fts -o $@ -q
-
 bgsub.s			:	../$(IMAGES)/bgsub.bmp
-	grit	$< -gB8 -gzl -fts -o $@ -q
-
-bgsub2.s		:	../$(IMAGES)/bgsub2.bmp
 	grit	$< -gB8 -gzl -fts -o $@ -q
 
 Bot00.s			:	../$(IMAGES)/Bot00.bmp
@@ -285,6 +283,18 @@ Top36.s			:	../$(IMAGES)/Top36.bmp
 
 Top37.s			:	../$(IMAGES)/Top37.bmp
 	grit	$< -gB8 -gzl -fts -o $@ -q
+
+#---------------------------------------------------------------------------------
+# The bin2o rule should be copied and modified
+# for each extension used in the data directories
+#---------------------------------------------------------------------------------
+
+#---------------------------------------------------------------------------------
+# rule to build soundbank from music files
+#---------------------------------------------------------------------------------
+soundbank.bin : $(AUDIOFILES)
+#---------------------------------------------------------------------------------
+	@mmutil $^ -d -osoundbank.bin -hsoundbank.h
 
 #---------------------------------------------------------------------------------
 # you need a rule like this for each extension you use as binary data 

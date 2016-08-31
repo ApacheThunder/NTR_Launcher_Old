@@ -17,8 +17,12 @@
 */
 
 #include <nds.h>
+#include <maxmod9.h>
 #include <stdio.h>
 
+#include "soundbank.h"
+#include "soundbank_bin.h"
+ 
 #include "bios_decompress_callback.h"
 
 #define CONSOLE_SCREEN_WIDTH 32
@@ -88,7 +92,25 @@ void vramcpy2 (void* dest, const void* src, int size)
 	}
 }
 
+void BootJingle() {
+	mmInitDefaultMem((mm_addr)soundbank_bin);
+	
+	mmLoadEffect( SFX_BOOM );
+
+	mm_sound_effect boom = {
+		{ SFX_BOOM } ,			// id
+		(int)(1.0f * (1<<10)),	// rate
+		0,		// handle
+		255,	// volume
+		128,	// panning
+	};
+	
+	mmEffectEx(&boom);
+	// return(1);
+}
+
 void BootSplashNormal() {
+
  	swiDecompressLZSSVram ((void*)Top00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)Bot00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top00Pal, Top00PalLen);
@@ -101,7 +123,7 @@ void BootSplashNormal() {
 		bgMapSub00[i] = (u16)i;
 	}
 	
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -117,7 +139,7 @@ void BootSplashNormal() {
 		bgMapSub01[i] = (u16)i;
 	}
 	
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -133,7 +155,7 @@ void BootSplashNormal() {
 		bgMapSub02[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -150,7 +172,7 @@ void BootSplashNormal() {
 		bgMapSub03[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -166,7 +188,7 @@ void BootSplashNormal() {
 		bgMapSub04[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -182,9 +204,12 @@ void BootSplashNormal() {
 		bgMapSub05[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
+
+	// Once frame 8 is reached boot jingle sound effect plays
+	BootJingle();
 
 	swiDecompressLZSSVram ((void*)Top06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)Bot05Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
@@ -198,7 +223,7 @@ void BootSplashNormal() {
 		bgMapSub06[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -214,7 +239,7 @@ void BootSplashNormal() {
 		bgMapSub07[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -229,7 +254,7 @@ void BootSplashNormal() {
 		bgMapTop08[i] = (u16)i;
 		bgMapSub08[i] = (u16)i;
 	}
-
+	
 	swiDecompressLZSSVram ((void*)Top09Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)Bot05Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top09Pal, Top09PalLen);
@@ -242,7 +267,7 @@ void BootSplashNormal() {
 		bgMapSub09[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -258,7 +283,7 @@ void BootSplashNormal() {
 		bgMapSub10[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -274,7 +299,7 @@ void BootSplashNormal() {
 		bgMapSub11[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -290,7 +315,7 @@ void BootSplashNormal() {
 		bgMapSub12[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -306,7 +331,7 @@ void BootSplashNormal() {
 		bgMapSub13[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -322,7 +347,7 @@ void BootSplashNormal() {
 		bgMapSub14[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -338,7 +363,7 @@ void BootSplashNormal() {
 		bgMapSub15[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -354,7 +379,7 @@ void BootSplashNormal() {
 		bgMapSub16[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -370,7 +395,7 @@ void BootSplashNormal() {
 		bgMapSub17[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -386,7 +411,7 @@ void BootSplashNormal() {
 		bgMapSub18[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -402,7 +427,7 @@ void BootSplashNormal() {
 		bgMapSub19[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -418,7 +443,7 @@ void BootSplashNormal() {
 		bgMapSub20[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -434,7 +459,7 @@ void BootSplashNormal() {
 		bgMapSub21[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -450,7 +475,7 @@ void BootSplashNormal() {
 		bgMapSub22[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -466,7 +491,7 @@ void BootSplashNormal() {
 		bgMapSub23[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -482,7 +507,7 @@ void BootSplashNormal() {
 		bgMapSub24[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -498,7 +523,7 @@ void BootSplashNormal() {
 		bgMapSub25[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -514,7 +539,7 @@ void BootSplashNormal() {
 		bgMapSub26[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -530,7 +555,7 @@ void BootSplashNormal() {
 		bgMapSub27[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -546,7 +571,7 @@ void BootSplashNormal() {
 		bgMapSub28[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -562,7 +587,7 @@ void BootSplashNormal() {
 		bgMapSub29[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -578,7 +603,7 @@ void BootSplashNormal() {
 		bgMapSub30[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -610,7 +635,7 @@ void BootSplashNormal() {
 		bgMapSub32[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 	
@@ -627,7 +652,7 @@ void BootSplashNormal() {
 		bgMapSub33[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -643,7 +668,7 @@ void BootSplashNormal() {
 		bgMapSub34[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -659,7 +684,7 @@ void BootSplashNormal() {
 		bgMapSub35[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -675,7 +700,7 @@ void BootSplashNormal() {
 		bgMapSub36[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 
@@ -691,7 +716,7 @@ void BootSplashNormal() {
 		bgMapSub37[i] = (u16)i;
 	}
 
-	for (int i = 0; i < 3.75; i++) {
+	for (int i = 0; i < 3; i++) {
 		swiWaitForVBlank();
 	}
 

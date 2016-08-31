@@ -19,8 +19,11 @@
 #include <nds.h>
 #include <nds/arm7/input.h>
 #include <nds/system.h>
-#include <nds/fifocommon.h>
+// #include <nds/fifocommon.h>
 
+#include <maxmod7.h>
+
+#include "launch_engine_arm7.h"
 
 void VcountHandler() {
 	inputGetAndSend();
@@ -36,10 +39,7 @@ unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 
 
 // Merged Power on and Power off slot sequence. Don't need them seperate for now.
-void ResetSlot() {
-	int backup =*SCFG_EXT;
-	// use 0x82050100 instead if your app uses SD access
-	*SCFG_EXT=0x82000000;
+int ResetSlot(void) {
 
 	// Power off Slot
 	while(*SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
@@ -48,9 +48,8 @@ void ResetSlot() {
 	*SCFG_MC = 0x0C;          		// set state=3 
 	while(*SCFG_MC&0x0C !=  0x00);  // wait until state=0
 
-	// Tell Arm9 it finished slot power off
-	fifoSendValue32(FIFO_USER_01, 1);
-
+	swiWaitForVBlank();
+	
 	// Power On Slot
 	while(*SCFG_MC&0x0C !=  0x0C); // wait until state<>3
 	if(*SCFG_MC&0x0C != 0x00) return; //  exit if state<>0
@@ -64,8 +63,8 @@ void ResetSlot() {
 	*ROMCTRL = 0x20000000; // wait 27ms, then set ROMCTRL=20000000h
 	
 	while(*ROMCTRL&0x8000000 != 0x8000000);
-	
-	*SCFG_EXT=backup;
+
+	// fifoSendValue32(FIFO_USER_02, 1);	
 }
 
 int main(void) {
@@ -73,8 +72,9 @@ int main(void) {
 	irqInit();
 	fifoInit();
 
-	// Reset Slot command.
-	ResetSlot();
+	// Sets Bit31 to 1. SCFG lock down will occur once arm9 sets bit31 to 0.
+	// This is currently set to occur on main.arm9.c of bootloader just before game binary is started.
+	*SCFG_EXT=0x80000000;
 
 	// read User Settings from firmware
 	readUserSettings();
@@ -82,25 +82,23 @@ int main(void) {
 	// Start the RTC tracking IRQ
 	initClockIRQ();
 
+	mmInstall(FIFO_MAXMOD);
+
 	SetYtrigger(80);
+	
+	ResetSlot();
 
+	installSoundFIFO();
 	installSystemFIFO();
-
 	
 	irqSet(IRQ_VCOUNT, VcountHandler);
 	irqSet(IRQ_VBLANK, VblankHandler);
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT);
 
-	// Keep the ARM7 mostly idle
 	while (1) {
-		if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
-		{
-			irqDisable (IRQ_ALL);
-			*((vu32*)0x027FFE34) = (u32)0x06000000;
-		}
-		swiSoftReset();
+		runLaunchEngineCheck();
+		swiWaitForVBlank();
 	}
-	swiWaitForVBlank();
 }
 

@@ -142,6 +142,7 @@ Written by Darkain, modified by Chishm
 --------------------------------------------------------------------------*/
 void arm9_main (void) {
 
+	// unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 
 	register int i;
@@ -219,10 +220,16 @@ void arm9_main (void) {
 	VRAM_I_CR = 0;
 	REG_POWERCNT  = 0x820F;
 
-	// Sets SCFG_EXT to normal. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
-	// So this will help fix compatibility issues with games that have issue with the new patch.
+	
+	// Most SCFG can be set here. However setting Bit31 to zero will lock SCFG if bit31 is set to 1 on arm7.
+	//*SCFG_EXT=0x830F0100;
 	*SCFG_EXT=0x02000000;
-
+	// SCFG_CLK
+	// 0x0180 : NTR
+	// 0x0187 : TWL
+	// 
+	//*SCFG_CLK=0x0187;
+	
 	// set ARM9 state to ready and wait for it to change again
 	arm9_stateFlag = ARM9_READY;
 	

@@ -16,7 +16,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-void BootSplashNormal (void);
+#include <nds.h>
 
-void BootJingle (void);
+void runLaunchEngineCheck (void)
+{
+	if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
+	{
+		irqDisable (IRQ_ALL);
+		*((vu32*)0x027FFE34) = (u32)0x06000000;
+		
+		unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
+		unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+		
+		if (*SCFG_ROM & 0x03==0x01) { *SCFG_ROM = 0; }
+
+		swiSoftReset();
+	} 
+}
 

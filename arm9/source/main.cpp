@@ -22,27 +22,22 @@
 #include <string.h>
 #include <malloc.h>
 #include <list>
-#include <nds/fifocommon.h>
+// #include <nds/fifocommon.h>
 
 #include "ui.h"
 #include "nds_card.h"
 #include "launch_engine.h"
 #include "crc.h"
-#include "version.h"
+#include "version.h" 
 
- 
-int main(void) {
+int main() {
 
 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 	
-	fifoWaitValue32(FIFO_USER_01);
-	
+	// fifoWaitValue32(FIFO_USER_01);
+
 	main_ui();
-	
-	for (int i = 0; i < 80; i++) {
-		swiWaitForVBlank();
-	}
 	
 	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
 	if(*SCFG_MC == 0x11) { 

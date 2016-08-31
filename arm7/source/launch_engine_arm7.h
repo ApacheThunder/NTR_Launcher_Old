@@ -16,7 +16,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-void BootSplashNormal (void);
+#ifndef LAUNCH_ENGINE_ARM7_H
+#define LAUNCH_ENGINE_ARM7_H
 
-void BootJingle (void);
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
+void runLaunchEngineCheck (void);
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // LAUNCH_ENGINE_ARM7_H
 

@@ -19,6 +19,7 @@
 #include "read_card.h"
 
 #include <nds.h>
+
 #include <nds/arm9/cache.h>
 #include <nds/dma.h>
 #include <nds/card.h>

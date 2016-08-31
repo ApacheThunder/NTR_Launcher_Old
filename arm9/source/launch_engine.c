@@ -50,8 +50,6 @@ void runLaunchEngine (void)
 	// Give the VRAM to the ARM7
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_ARM7_0x06000000;
 	
-
-
 	// Reset into a passme loop
 	REG_EXMEMCNT = 0xffff;
 	*((vu32*)0x027FFFFC) = 0;
