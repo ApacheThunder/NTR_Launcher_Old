@@ -23,10 +23,7 @@
 #include "bios_decompress_callback.h"
 
 #include "bootsplash.h"
-
-#include "bgtop.h"
-#include "bgtop2.h"
-#include "bgsub.h"
+#include "errorsplash.h"
 
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
@@ -42,35 +39,6 @@ void vramcpy (void* dest, const void* src, int size)
 	}
 }
 
-
-void ErrorNoCard() {
- 	swiDecompressLZSSVram ((void*)bgtopTiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)bgsubTiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy (&BG_PALETTE[0], bgtopPal, bgtopPalLen);
-	vramcpy (&BG_PALETTE_SUB[0], bgsubPal, bgsubPalLen);
-	u16* bgMapTop2 = (u16*)SCREEN_BASE_BLOCK(0);
-	u16* bgMapSub2 = (u16*)SCREEN_BASE_BLOCK_SUB(0);
-		for (int i = 0; i < CONSOLE_SCREEN_WIDTH*CONSOLE_SCREEN_HEIGHT; i++) {
-			bgMapTop2[i] = (u16)i;
-			bgMapSub2[i] = (u16)i;
-		}
-	for (int i = 0; i < 320; i++) { swiWaitForVBlank(); }
-}
-
-void ErrorNoBit31() {
- 	swiDecompressLZSSVram ((void*)bgtop2Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)bgsubTiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy (&BG_PALETTE[0], bgtop2Pal, bgtop2PalLen);
-	vramcpy (&BG_PALETTE_SUB[0], bgsubPal, bgsubPalLen);
-	u16* bgMapTop = (u16*)SCREEN_BASE_BLOCK(0);
-	u16* bgMapSub = (u16*)SCREEN_BASE_BLOCK_SUB(0);
-		for (int i = 0; i < CONSOLE_SCREEN_WIDTH*CONSOLE_SCREEN_HEIGHT; i++) {
-			bgMapTop[i] = (u16)i;
-			bgMapSub[i] = (u16)i;
-		}
-	for (int i = 0; i < 320; i++) { swiWaitForVBlank(); }
-}
-
 void main_ui() {
 	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
@@ -83,6 +51,12 @@ void main_ui() {
 	REG_BG0CNT_SUB = BG_MAP_BASE(0) | BG_COLOR_256 | BG_TILE_BASE(2) | BG_PRIORITY(2);
 	BG_PALETTE[0]=0;   
 	BG_PALETTE[255]=0xffff;
+	u16* bgMapTop = (u16*)SCREEN_BASE_BLOCK(0);
+	u16* bgMapSub = (u16*)SCREEN_BASE_BLOCK_SUB(0);
+	for (int i = 0; i < CONSOLE_SCREEN_WIDTH*CONSOLE_SCREEN_HEIGHT; i++) {
+		bgMapTop[i] = (u16)i;
+		bgMapSub[i] = (u16)i;
+	}
 
 	// Boot Splash will always play.
 	BootSplashNormal();

@@ -18,7 +18,6 @@
 
 #include <nds.h>
 #include <stdio.h>
-#include <fat.h>
 #include <string.h>
 #include <malloc.h>
 #include <list>
@@ -52,6 +51,5 @@ int main() {
 				runLaunchEngine ();
 			}
 	}
-
 }
 

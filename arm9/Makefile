@@ -128,15 +128,90 @@ $(ARM9ELF)	:	$(OFILES)
 #---------------------------------------------------------------------------------
 # graphics
 #---------------------------------------------------------------------------------
-bgtop.s			:	../$(IMAGES)/bgtop.bmp
+# generic fade from white to black
+
+fade00.s			:	../$(IMAGES)/fade00.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+fade01.s			:	../$(IMAGES)/fade01.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+fade02.s			:	../$(IMAGES)/fade02.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+fade03.s			:	../$(IMAGES)/fade03.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+fade04.s			:	../$(IMAGES)/fade04.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+# generic bottom screen error message
+suberror00.s			:	../$(IMAGES)/suberror00.bmp
 	grit	$< -gB8 -gzl -fts -o $@ -q
 	
-bgtop2.s		:	../$(IMAGES)/bgtop2.bmp
+suberror01.s			:	../$(IMAGES)/suberror01.bmp
 	grit	$< -gB8 -gzl -fts -o $@ -q
 
-bgsub.s			:	../$(IMAGES)/bgsub.bmp
+suberror02.s			:	../$(IMAGES)/suberror02.bmp
 	grit	$< -gB8 -gzl -fts -o $@ -q
 
+suberror03.s			:	../$(IMAGES)/suberror03.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+suberror04.s			:	../$(IMAGES)/suberror04.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+suberror05.s			:	../$(IMAGES)/suberror05.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+suberror06.s			:	../$(IMAGES)/suberror06.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+# No bit31 patch error
+toperror1_00.s			:	../$(IMAGES)/toperror1_00.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror1_01.s			:	../$(IMAGES)/toperror1_01.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror1_02.s			:	../$(IMAGES)/toperror1_02.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror1_03.s			:	../$(IMAGES)/toperror1_03.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror1_04.s			:	../$(IMAGES)/toperror1_04.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror1_05.s			:	../$(IMAGES)/toperror1_05.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror1_06.s			:	../$(IMAGES)/toperror1_06.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+# No Cartridge Error
+toperror2_00.s			:	../$(IMAGES)/toperror2_00.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror2_01.s			:	../$(IMAGES)/toperror2_01.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror2_02.s			:	../$(IMAGES)/toperror2_02.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror2_03.s			:	../$(IMAGES)/toperror2_03.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror2_04.s			:	../$(IMAGES)/toperror2_04.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror2_05.s			:	../$(IMAGES)/toperror2_05.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+toperror2_06.s			:	../$(IMAGES)/toperror2_06.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+# Main Boot Splash sequence
 Bot00.s			:	../$(IMAGES)/Bot00.bmp
 	grit	$< -gB8 -gzl -fts -o $@ -q
 

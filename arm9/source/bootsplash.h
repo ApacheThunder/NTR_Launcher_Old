@@ -16,7 +16,21 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef BOOTSPLASH_H
+#define BOOTSPLASH_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void BootSplashNormal (void);
 
 void BootJingle (void);
+
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // BOOTSPLASH_H
 

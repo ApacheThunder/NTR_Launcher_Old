@@ -1,4 +1,4 @@
-NTR Launcher - v0.94b - Apache Thunder - Original code from NitroHax but with cheat engine/menu stripped out.
+NTR Launcher - v1.0 - Apache Thunder - Original code from NitroHax but with cheat engine/menu stripped out.
 
 Launcher side of NitroHax without the cheat engine. Nothing much else to say about it. :P
 
