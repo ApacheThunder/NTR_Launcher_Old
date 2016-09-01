@@ -209,7 +209,7 @@ void BootSplashNormal() {
 	swiWaitForVBlank();
 
 	// Once frame 8 is reached boot jingle sound effect plays
-	if (*SCFG_ROM=0x03) { BootJingle(); } else { BootJingleDSi(); }
+	if (*SCFG_ROM == 0x03) { BootJingle(); } else { BootJingleDSi(); }
 
 	swiDecompressLZSSVram ((void*)Top06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top06Pal, Top06PalLen);
@@ -271,7 +271,7 @@ void BootSplashNormal() {
 
 	swiWaitForVBlank();
 
-	if (*SCFG_ROM=0x03) {
+	if (*SCFG_ROM == 0x03) {
 		
 		swiDecompressLZSSVram ((void*)Top18Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 		vramcpy2 (&BG_PALETTE[0], Top18Pal, Top18PalLen);

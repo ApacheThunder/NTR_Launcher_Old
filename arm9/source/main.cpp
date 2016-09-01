@@ -32,8 +32,7 @@
 
 // int main(int argc, const char* argv[])
 int main() {
-	
- 	unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
+
 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
 	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 	

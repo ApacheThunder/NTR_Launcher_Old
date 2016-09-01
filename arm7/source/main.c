@@ -35,11 +35,7 @@ void VblankHandler(void) {
 // Merged Power on and Power off slot sequence. Don't need them seperate for now.
 void ResetSlot() {
 	unsigned int * ROMCTRL=(unsigned int*)0x40001A4; 
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
 	unsigned int * SCFG_MC=(unsigned int*)0x4004010; 
-	unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
-	unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
-	// *SCFG_EXT=0x82000000;
 	
 	// Power off Slot
 	while(*SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
@@ -50,7 +46,7 @@ void ResetSlot() {
 
 	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
 	fifoSendValue32(FIFO_USER_01, 1);
-
+	
 	// Power On Slot
 	while(*SCFG_MC&0x0C !=  0x0C); // wait until state<>3
 	if(*SCFG_MC&0x0C != 0x00) return; //  exit if state<>0
@@ -68,18 +64,17 @@ void ResetSlot() {
 }
 
 int main(void) {
+
 	unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
 
 	irqInit();
 	fifoInit();
-
+	
 	// When TWL games is ever supported, SCFG will be set correctly.
-	// if(*SCFG_ROM=3) { *SCFG_EXT=0x82000000; } else { *SCFG_EXT=0x8307f100; }
-	*SCFG_EXT=0x82000000;
+	if(*SCFG_ROM == 0x03) { *SCFG_EXT=0x82000000; } else { *SCFG_EXT=0x8307f100; }
 
 	// Reset Slot command.
-	// Only runs if in NTR mode. TWL mode does not require a card reset.
 	ResetSlot();
 
 	// read User Settings from firmware

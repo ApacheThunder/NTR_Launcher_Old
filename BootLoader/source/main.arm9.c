@@ -142,7 +142,7 @@ Written by Darkain, modified by Chishm
 void arm9_main (void) {
 
 	unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+	unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
 
 	register int i;
 	
@@ -233,7 +233,7 @@ void arm9_main (void) {
 	// Sets SCFG_EXT to normal. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
 	// So this will help fix compatibility issues with games that have issue with the new patch.
 	
-	if(*SCFG_ROM=3) { *SCFG_EXT=0x0307f100; } else { *SCFG_EXT=0x02000000; }
+	if(*SCFG_ROM == 0x03) { *SCFG_EXT=0x02000000; } else { *SCFG_EXT=0x0307f100; }
 
 	// wait for vblank then boot
 	while(REG_VCOUNT!=191);
