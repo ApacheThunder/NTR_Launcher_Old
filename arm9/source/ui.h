@@ -19,13 +19,5 @@
 #include <nds/ndstypes.h>
 #include <stdarg.h>
 
-//#define DEMO
-
-class UserInterface
-{
-public:
-	UserInterface (void);
-	~UserInterface ();
-	
-} ;
+void main_ui (void);
 

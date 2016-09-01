@@ -19,7 +19,10 @@
 #include <nds.h>
 #include <nds/arm7/input.h>
 #include <nds/system.h>
-#include <nds/fifocommon.h>
+// #include <nds/fifocommon.h>
+#include <maxmod7.h>
+
+#include "launch_engine_arm7.h"
 
 
 void VcountHandler() {
@@ -35,10 +38,8 @@ void ResetSlot() {
 	unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
 	unsigned int * SCFG_MC=(unsigned int*)0x4004010; 
 	unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
-	unsigned int * SCFG_CLK=(unsigned int*)0x4004004; 
-
-	int backup =*SCFG_EXT;
-	*SCFG_EXT=0x82000000;
+	unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
+	// *SCFG_EXT=0x82000000;
 	
 	// Power off Slot
 	while(*SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
@@ -48,10 +49,7 @@ void ResetSlot() {
 	while(*SCFG_MC&0x0C !=  0x00);  // wait until state=0
 
 	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
-	fifoSendValue32(FIFO_USER_01, 1);
-
-	// Wait for arm9 one more time.
-	// fifoWaitValue32(FIFO_USER_02);
+	// fifoSendValue32(FIFO_USER_01, 1);
 
 	// Power On Slot
 	while(*SCFG_MC&0x0C !=  0x0C); // wait until state<>3
@@ -66,26 +64,35 @@ void ResetSlot() {
 	*ROMCTRL = 0x20000000; // wait 27ms, then set ROMCTRL=20000000h
 	
 	while(*ROMCTRL&0x8000000 != 0x8000000);
-	
-	*SCFG_EXT=backup;
+
 }
 
 int main(void) {
+	unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
+	unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
 
 	irqInit();
 	fifoInit();
 
+	// When TWL games is ever supported, SCFG will be set correctly.
+	// if(*SCFG_ROM=3) { *SCFG_EXT=0x82000000; } else { *SCFG_EXT=0x8307f100; }
+	*SCFG_EXT=0x82000000;
 	// Reset Slot command.
-	ResetSlot();
+	// Only runs if in NTR mode. TWL mode does not require a card reset.
+	if(*SCFG_ROM=0x03) { ResetSlot(); }
+	
 
 	// read User Settings from firmware
 	readUserSettings();
 
 	// Start the RTC tracking IRQ
 	initClockIRQ();
+	
+	mmInstall(FIFO_MAXMOD);
 
 	SetYtrigger(80);
 
+	installSoundFIFO();
 	installSystemFIFO();
 
 	
@@ -94,15 +101,9 @@ int main(void) {
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT);
 
-	// Keep the ARM7 mostly idle
 	while (1) {
-		if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
-		{
-			irqDisable (IRQ_ALL);
-			*((vu32*)0x027FFE34) = (u32)0x06000000;
-		}
-		swiSoftReset();
+		runLaunchEngineCheck();
+		swiWaitForVBlank();
 	}
-	swiWaitForVBlank();
 }
 

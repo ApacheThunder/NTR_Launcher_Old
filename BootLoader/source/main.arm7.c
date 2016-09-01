@@ -228,8 +228,6 @@ void arm7_startBinary (void)
 
 void arm7_main (void) {
 	
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-	
 	int errorCode;
 	
 	// Wait for ARM9 to at least start
@@ -249,9 +247,6 @@ void arm7_main (void) {
 	}
 	
 	debugOutput (ERR_STS_HOOK_BIN);
-	
-	// Relock bit31. Arm9 then sets SCFG_EXT on it's end to 0x00000000.
-	*SCFG_EXT=0x80000000;
 
 	arm7_startBinary();
 	
