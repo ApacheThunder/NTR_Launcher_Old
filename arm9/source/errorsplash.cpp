@@ -64,7 +64,9 @@ void vramcpy3 (void* dest, const void* src, int size)
 
 void FadeFX() {
 
- 	swiDecompressLZSSVram ((void*)fade00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+ 	swiWaitForVBlank();
+	
+	swiDecompressLZSSVram ((void*)fade00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)fade00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], fade00Pal, fade00PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], fade00Pal, fade00PalLen);

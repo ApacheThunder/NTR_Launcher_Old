@@ -76,6 +76,8 @@ int main(void) {
 	// This is currently set to occur on main.arm9.c of bootloader just before game binary is started.
 	*SCFG_EXT=0x80000000;
 
+	ResetSlot();
+
 	// read User Settings from firmware
 	readUserSettings();
 
@@ -85,8 +87,6 @@ int main(void) {
 	mmInstall(FIFO_MAXMOD);
 
 	SetYtrigger(80);
-	
-	ResetSlot();
 
 	installSoundFIFO();
 	installSystemFIFO();

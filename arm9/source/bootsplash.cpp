@@ -110,42 +110,53 @@ void BootJingle() {
 
 void BootSplashNormal() {
 
+	// offsetting palletes by one frame during the fade in seems to fix black flicker at start.	
+	// only did this for about 5 frames. (time it takes for bottom screen to fade in)
+	swiDecompressLZSSVram ((void*)Top00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)Bot00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy2 (&BG_PALETTE[0], Top01Pal, Top01PalLen);
+	vramcpy2 (&BG_PALETTE_SUB[0], Bot01Pal, Bot01PalLen);
+
 	swiWaitForVBlank();
 
- 	swiDecompressLZSSVram ((void*)Top00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)Top00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)Bot00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top00Pal, Top00PalLen);
 	vramcpy2 (&BG_PALETTE_SUB[0], Bot00Pal, Bot00PalLen);
 
-	// Using just swiWaitForVblank results in the perfect timing.
-	// With current code, this appears to be nearly 16FPS exactly.
-	// for (int i = 0; i < 3; i++) { swiWaitForVBlank(); }
+	swiWaitForVBlank();
+
+	swiDecompressLZSSVram ((void*)Top00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)Bot00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy2 (&BG_PALETTE[0], Top00Pal, Top00PalLen);
+	vramcpy2 (&BG_PALETTE_SUB[0], Bot00Pal, Bot00PalLen);
+
 	swiWaitForVBlank();
 	
 	swiDecompressLZSSVram ((void*)Top01Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)Bot01Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy2 (&BG_PALETTE[0], Top01Pal, Top01PalLen);
-	vramcpy2 (&BG_PALETTE_SUB[0], Bot01Pal, Bot01PalLen);
-		
-	swiWaitForVBlank();
-
-	swiDecompressLZSSVram ((void*)Top02Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)Bot02Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top02Pal, Top02PalLen);
 	vramcpy2 (&BG_PALETTE_SUB[0], Bot02Pal, Bot02PalLen);
+	
+	swiWaitForVBlank();
+	
+	swiDecompressLZSSVram ((void*)Top02Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)Bot02Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy2 (&BG_PALETTE[0], Top03Pal, Top03PalLen);
+	vramcpy2 (&BG_PALETTE_SUB[0], Bot03Pal, Bot03PalLen);
 	
 	swiWaitForVBlank();
 
 	swiDecompressLZSSVram ((void*)Top03Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)Bot03Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy2 (&BG_PALETTE[0], Top03Pal, Top03PalLen);
-	vramcpy2 (&BG_PALETTE_SUB[0], Bot03Pal, Bot03PalLen);
+	vramcpy2 (&BG_PALETTE[0], Top04Pal, Top04PalLen);
+	vramcpy2 (&BG_PALETTE_SUB[0], Bot04Pal, Bot04PalLen);
 
 	swiWaitForVBlank();
 
 	swiDecompressLZSSVram ((void*)Top04Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)Bot04Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy2 (&BG_PALETTE[0], Top04Pal, Top04PalLen);
+	vramcpy2 (&BG_PALETTE[0], Top05Pal, Top05PalLen);
 	vramcpy2 (&BG_PALETTE_SUB[0], Bot04Pal, Bot04PalLen);
 
 	swiWaitForVBlank();
@@ -261,8 +272,7 @@ void BootSplashNormal() {
 	swiWaitForVBlank();
 
 	swiDecompressLZSSVram ((void*)Top26Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)Bot05Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy2 (&BG_PALETTE_SUB[0], Bot05Pal, Bot05PalLen);
+	vramcpy2 (&BG_PALETTE[0], Top26Pal, Top26PalLen);
 
 	swiWaitForVBlank();
 
