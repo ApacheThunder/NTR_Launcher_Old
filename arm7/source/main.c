@@ -19,7 +19,7 @@
 #include <nds.h>
 #include <nds/arm7/input.h>
 #include <nds/system.h>
-// #include <nds/fifocommon.h>
+#include <nds/fifocommon.h>
 #include <maxmod7.h>
 
 #include "launch_engine_arm7.h"
@@ -49,7 +49,7 @@ void ResetSlot() {
 	while(*SCFG_MC&0x0C !=  0x00);  // wait until state=0
 
 	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
-	// fifoSendValue32(FIFO_USER_01, 1);
+	fifoSendValue32(FIFO_USER_01, 1);
 
 	// Power On Slot
 	while(*SCFG_MC&0x0C !=  0x0C); // wait until state<>3
@@ -77,10 +77,10 @@ int main(void) {
 	// When TWL games is ever supported, SCFG will be set correctly.
 	// if(*SCFG_ROM=3) { *SCFG_EXT=0x82000000; } else { *SCFG_EXT=0x8307f100; }
 	*SCFG_EXT=0x82000000;
+
 	// Reset Slot command.
 	// Only runs if in NTR mode. TWL mode does not require a card reset.
-	if(*SCFG_ROM=0x03) { ResetSlot(); }
-	
+	ResetSlot();
 
 	// read User Settings from firmware
 	readUserSettings();
@@ -94,7 +94,6 @@ int main(void) {
 
 	installSoundFIFO();
 	installSystemFIFO();
-
 	
 	irqSet(IRQ_VCOUNT, VcountHandler);
 	irqSet(IRQ_VBLANK, VblankHandler);
