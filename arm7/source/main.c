@@ -19,7 +19,7 @@
 #include <nds.h>
 #include <nds/arm7/input.h>
 #include <nds/system.h>
-// #include <nds/fifocommon.h>
+#include <nds/fifocommon.h>
 
 #include <maxmod7.h>
 
@@ -32,39 +32,46 @@ void VcountHandler() {
 void VblankHandler(void) {
 }
 
-unsigned int * ROMCTRL=(unsigned int*)0x40001A4; 
-unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
-unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
-unsigned int * SCFG_MC=(unsigned int*)0x4004010; 
+volatile u32* ROMCTRL = (volatile u32*)0x40001A4; 
+volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
+volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
+volatile u32* SCFG_EXT = (volatile u32*)0x4004008; 
+volatile u32* SCFG_MC = (volatile u32*)0x4004010; 
 
-
+	
 // Merged Power on and Power off slot sequence. Don't need them seperate for now.
 int ResetSlot(void) {
 
 	// Power off Slot
-	while(*SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
-	if(*SCFG_MC&0x0C != 0x08) return; 		// exit if state<>2      
+	while(*SCFG_MC & 0x0C != 0x0C); 		// wait until state<>3
+	if(*SCFG_MC & 0x0C != 0x08) return; 		// exit if state<>2      
 	
 	*SCFG_MC = 0x0C;          		// set state=3 
-	while(*SCFG_MC&0x0C !=  0x00);  // wait until state=0
+	while(*SCFG_MC & 0x0C != 0x00);  // wait until state=0
 
 	swiWaitForVBlank();
 	
 	// Power On Slot
-	while(*SCFG_MC&0x0C !=  0x0C); // wait until state<>3
-	if(*SCFG_MC&0x0C != 0x00) return; //  exit if state<>0
+	while(*SCFG_MC & 0x0C != 0x0C); // wait until state<>3
+	if(*SCFG_MC & 0x0C != 0x00) return; //  exit if state<>0
 	
 	*SCFG_MC = 0x04;    // wait 1ms, then set state=1
-	while(*SCFG_MC&0x0C != 0x04);
+	swiWaitForVBlank();
+	while(*SCFG_MC & 0x0C != 0x04);
+	
+	swiWaitForVBlank();
 	
 	*SCFG_MC = 0x08;    // wait 10ms, then set state=2      
-	while(*SCFG_MC&0x0C != 0x08);
+	while(*SCFG_MC & 0x0C != "0x08");
+	
+	swiWaitForVBlank();
+	swiWaitForVBlank();
 	
 	*ROMCTRL = 0x20000000; // wait 27ms, then set ROMCTRL=20000000h
 	
-	while(*ROMCTRL&0x8000000 != 0x8000000);
-
-	// fifoSendValue32(FIFO_USER_02, 1);	
+	swiWaitForVBlank();
+	
+	while(*ROMCTRL & 0x8000000 != 0x8000000);
 }
 
 int main(void) {
@@ -72,11 +79,8 @@ int main(void) {
 	irqInit();
 	fifoInit();
 
-	// Sets Bit31 to 1. SCFG lock down will occur once arm9 sets bit31 to 0.
-	// This is currently set to occur on main.arm9.c of bootloader just before game binary is started.
-	*SCFG_EXT=0x80000000;
-
-	ResetSlot();
+	*SCFG_CLK=0x0187;
+	*SCFG_EXT=0x92A00000;
 
 	// read User Settings from firmware
 	readUserSettings();
@@ -90,11 +94,16 @@ int main(void) {
 
 	installSoundFIFO();
 	installSystemFIFO();
-	
+
 	irqSet(IRQ_VCOUNT, VcountHandler);
 	irqSet(IRQ_VBLANK, VblankHandler);
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT);
+
+	ResetSlot();
+
+	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
+	fifoSendValue32(FIFO_USER_01, 1); 
 
 	while (1) {
 		runLaunchEngineCheck();

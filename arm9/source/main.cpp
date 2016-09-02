@@ -21,7 +21,7 @@
 #include <string.h>
 #include <malloc.h>
 #include <list>
-// #include <nds/fifocommon.h>
+#include <nds/fifocommon.h>
 
 #include "ui.h"
 #include "nds_card.h"
@@ -29,15 +29,22 @@
 #include "crc.h"
 #include "version.h" 
 
+volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+volatile u32* SCFG_MC = (volatile u32*)0x4004010;
+volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
+
 int main() {
-
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
 	
-	// fifoWaitValue32(FIFO_USER_01);
-
-	main_ui();
+	// Waits for arm7 to power off slot before continuing
+	fifoWaitValue32(FIFO_USER_01);
 	
+	swiWaitForVBlank();
+
+	if (*SCFG_ROM=0x03 or 0x00) { 
+		main_ui();
+		swiWaitForVBlank();
+	}
+
 	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
 	if(*SCFG_MC == 0x11) { 
 	// Do nothing. Card init fails and code from NitroHax that fixes this doesn't work here yet.

@@ -359,6 +359,64 @@ Top36.s			:	../$(IMAGES)/Top36.bmp
 Top37.s			:	../$(IMAGES)/Top37.bmp
 	grit	$< -gB8 -gzl -fts -o $@ -q
 
+# DSi BootSplash. Used if TWL mode detected
+DSi18.s			:	../$(IMAGES)/DSi18.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi19.s			:	../$(IMAGES)/DSi19.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi20.s			:	../$(IMAGES)/DSi20.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi21.s			:	../$(IMAGES)/DSi21.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi22.s			:	../$(IMAGES)/DSi22.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi23.s			:	../$(IMAGES)/DSi23.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi24.s			:	../$(IMAGES)/DSi24.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi25.s			:	../$(IMAGES)/DSi25.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi26.s			:	../$(IMAGES)/DSi26.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi27.s			:	../$(IMAGES)/DSi27.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi28.s			:	../$(IMAGES)/DSi28.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi29.s			:	../$(IMAGES)/DSi29.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi30.s			:	../$(IMAGES)/DSi30.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi31.s			:	../$(IMAGES)/DSi31.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi32.s			:	../$(IMAGES)/DSi32.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi33.s			:	../$(IMAGES)/DSi33.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi34.s			:	../$(IMAGES)/DSi34.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi35.s			:	../$(IMAGES)/DSi35.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
+DSi36.s			:	../$(IMAGES)/DSi36.bmp
+	grit	$< -gB8 -gzl -fts -o $@ -q
+
 #---------------------------------------------------------------------------------
 # The bin2o rule should be copied and modified
 # for each extension used in the data directories

@@ -23,10 +23,11 @@
 extern "C" {
 #endif
 
-void BootSplashNormal (void);
-
 void BootJingle (void);
 
+void BootSplashNormal (void);
+
+void BootSplashDSi (void);
 
 #ifdef __cplusplus
 }

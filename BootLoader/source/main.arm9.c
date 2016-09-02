@@ -142,9 +142,9 @@ Written by Darkain, modified by Chishm
 --------------------------------------------------------------------------*/
 void arm9_main (void) {
 
-	// unsigned int * SCFG_CLK=(unsigned int*)0x4004004;
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-
+	volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
+	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+	
 	register int i;
 	
 	//set shared ram to ARM7
@@ -222,13 +222,9 @@ void arm9_main (void) {
 
 	
 	// Most SCFG can be set here. However setting Bit31 to zero will lock SCFG if bit31 is set to 1 on arm7.
-	//*SCFG_EXT=0x830F0100;
+	// *SCFG_EXT=0x830F0100;
 	*SCFG_EXT=0x02000000;
-	// SCFG_CLK
-	// 0x0180 : NTR
-	// 0x0187 : TWL
-	// 
-	//*SCFG_CLK=0x0187;
+	
 	
 	// set ARM9 state to ready and wait for it to change again
 	arm9_stateFlag = ARM9_READY;

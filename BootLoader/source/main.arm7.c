@@ -225,6 +225,8 @@ void arm7_startBinary (void)
 
 void arm7_main (void) {
 	
+	volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
+
 	int errorCode;
 	
 	// Wait for ARM9 to at least start
@@ -236,6 +238,11 @@ void arm7_main (void) {
 	arm7_resetMemory();	
 
 	debugOutput (ERR_STS_LOAD_BIN);
+	
+	// SCFG_CLK
+	// 0x0180 : NTR
+	// 0x0187 : TWL
+	*SCFG_CLK=0x0180;
 
 	// Load the NDS file
 	errorCode = arm7_loadBinary();
