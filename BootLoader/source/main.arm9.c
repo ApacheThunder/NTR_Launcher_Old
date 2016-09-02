@@ -141,7 +141,6 @@ Written by Darkain, modified by Chishm
 --------------------------------------------------------------------------*/
 void arm9_main (void) {
 
-	volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
 	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
 
 	register int i;
@@ -233,9 +232,8 @@ void arm9_main (void) {
 	// Sets SCFG_EXT to normal. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
 	// So this will help fix compatibility issues with games that have issue with the new patch.
 	
-	// if(*SCFG_ROM == 0x03) { *SCFG_EXT=0x02000000; } else { *SCFG_EXT=0x0307f100; }
-	*SCFG_EXT=0x02000000;
-
+	*SCFG_EXT=0x12A00000;
+	
 	// wait for vblank then boot
 	while(REG_VCOUNT!=191);
 	while(REG_VCOUNT==191);

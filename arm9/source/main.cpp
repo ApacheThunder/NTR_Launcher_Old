@@ -42,7 +42,7 @@ int main() {
 	swiWaitForVBlank();
 	
 	// Disabled until libnds can be fixed
-	// main_ui();
+	main_ui();
 	
 	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
 	if(*SCFG_MC == 0x11) { 

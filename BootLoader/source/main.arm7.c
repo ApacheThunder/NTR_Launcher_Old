@@ -57,6 +57,7 @@ tNDSHeader* ndsHeader = (tNDSHeader*)NDS_HEAD;
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // Used for debugging purposes
+/* Disabled for now. Re-enable to debug problems
 static void errorOutput (u32 code) {
 	// Wait until the ARM9 is ready
 	while (arm9_stateFlag != ARM9_READY);
@@ -67,6 +68,7 @@ static void errorOutput (u32 code) {
 	// Stop
 	while(1);
 }
+*/
 
 static void debugOutput (u32 code) {
 	// Wait until the ARM9 is ready
@@ -227,8 +229,15 @@ void arm7_startBinary (void)
 // Main function
 
 void arm7_main (void) {
-	
+
+	volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
 	volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
+	// volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+
+	*SCFG_ROM = 0x703;
+
+	// *SCFG_EXT = 0x80000000;
+	*SCFG_CLK = 0x0180;
 
 	int errorCode;
 	
@@ -247,8 +256,6 @@ void arm7_main (void) {
 	if (errorCode) {
 		debugOutput(errorCode);
 	}
-	
-	*SCFG_CLK = 0x0180;
 
 	debugOutput (ERR_STS_HOOK_BIN);
 

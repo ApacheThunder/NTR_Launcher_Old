@@ -20,9 +20,6 @@
 #include <nds/card.h>
 #include "nds_card.h"
 
-unsigned int * SCFG_EXT=(unsigned int*)0x4004008; 
-unsigned int * SCFG_MC=(unsigned int*)0x4004010; 
-
 void getHeader (u32* ndsHeader) {
 	cardParamCommand (CARD_CMD_DUMMY, 0, 
 		CARD_ACTIVATE | CARD_CLK_SLOW | CARD_BLK_SIZE(1) | CARD_DELAY1(0x1FFF) | CARD_DELAY2(0x3F), 
@@ -34,12 +31,3 @@ void getHeader (u32* ndsHeader) {
 
 }
 
-void SwitchToNTRCARD()
-{
-	*SCFG_EXT&=~0x80;
-}
-
-void SwitchToTWLCARD()
-{
-    *SCFG_EXT|=0x80;
-}

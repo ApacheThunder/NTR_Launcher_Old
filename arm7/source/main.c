@@ -69,27 +69,23 @@ int main(void) {
 	
 	irqInit();
 	fifoInit();
-	
-	// NTR mode
-	*SCFG_ROM = 0x703;
+
 	// TWL mode
 	// *SCFG_ROM = 0x501;
 	
 	// When TWL games is ever supported, SCFG will be set correctly.
 	if(*SCFG_ROM == 0x703) {
-		*SCFG_EXT=0x82000000;
-		// *SCFG_CLK = 0x0180;
+		*SCFG_EXT = 0x92A00000;
 	} else {
 		if(*SCFG_ROM == 0x501) {
 			*SCFG_EXT=0x8307f100;
-			// *SCFG_CLK = 0x0187;
 		}
 	}
 	
 	// Reset Slot command.
 	ResetSlot();
 
-	*SCFG_CLK = 0x0187;
+	*SCFG_CLK = 0x0185;
 	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
 	fifoSendValue32(FIFO_USER_01, 1);	
 	

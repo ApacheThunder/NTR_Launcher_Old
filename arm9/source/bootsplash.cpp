@@ -495,5 +495,9 @@ void BootSplashDSi() {
 
 	swiWaitForVBlank();
 
+	swiDecompressLZSSVram ((void*)Top37Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy2 (&BG_PALETTE[0], Top37Pal, Top37PalLen);
+
+	swiWaitForVBlank();
 }
 
