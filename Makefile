@@ -10,8 +10,8 @@ include $(DEVKITARM)/ds_rules
 export TARGET		:=	NTR_Launcher
 export TOPDIR		:=	$(CURDIR)
 
-export VERSION_MAJOR	:= 0
-export VERSION_MINOR	:= 94b_alt
+export VERSION_MAJOR	:= 1
+export VERSION_MINOR	:= 1_alt
 export VERSTRING	:=	$(VERSION_MAJOR).$(VERSION_MINOR)
 
 #---------------------------------------------------------------------------------
