@@ -24,11 +24,6 @@ void runLaunchEngineCheck (void)
 	{
 		irqDisable (IRQ_ALL);
 		*((vu32*)0x027FFE34) = (u32)0x06000000;
-		
-		unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
-		unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-		
-		if (*SCFG_ROM & 0x03==0x01) { *SCFG_ROM = 0; }
 
 		swiSoftReset();
 	} 

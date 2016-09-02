@@ -33,14 +33,17 @@
 // int main(int argc, const char* argv[])
 int main() {
 
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
-	
+	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+	volatile u32* SCFG_MC = (volatile u32*)0x4004010; 	
+
 	// Waits for arm7 to power off slot before continuing
 	fifoWaitValue32(FIFO_USER_01);
-
-	main_ui();	
-
+	
+	swiWaitForVBlank();
+	
+	// Disabled until libnds can be fixed
+	// main_ui();
+	
 	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
 	if(*SCFG_MC == 0x11) { 
 	// Do nothing. Card init fails and code from NitroHax that fixes this doesn't work here yet.

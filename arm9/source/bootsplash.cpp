@@ -148,7 +148,7 @@ void BootJingleDSi() {
  
 void BootSplashNormal() {
 	
-	unsigned int * SCFG_ROM=(unsigned int*)0x4004000;
+	volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
 
 	// offsetting palletes by one frame during the fade in seems to fix black flicker at start.	
 	// only did this for about 5 frames. (time it takes for bottom screen to fade in)
@@ -209,7 +209,7 @@ void BootSplashNormal() {
 	swiWaitForVBlank();
 
 	// Once frame 8 is reached boot jingle sound effect plays
-	if (*SCFG_ROM == 0x03) { BootJingle(); } else { BootJingleDSi(); }
+	if (*SCFG_ROM == 0x03 or *SCFG_ROM == 0x00) { BootJingle(); } else { BootJingleDSi(); }
 
 	swiDecompressLZSSVram ((void*)Top06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top06Pal, Top06PalLen);
@@ -271,7 +271,7 @@ void BootSplashNormal() {
 
 	swiWaitForVBlank();
 
-	if (*SCFG_ROM == 0x03) {
+	if (*SCFG_ROM == 0x03 or *SCFG_ROM == 0x00) {
 		
 		swiDecompressLZSSVram ((void*)Top18Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 		vramcpy2 (&BG_PALETTE[0], Top18Pal, Top18PalLen);

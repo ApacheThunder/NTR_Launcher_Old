@@ -228,6 +228,8 @@ void arm7_startBinary (void)
 
 void arm7_main (void) {
 	
+	volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
+
 	int errorCode;
 	
 	// Wait for ARM9 to at least start
@@ -246,6 +248,8 @@ void arm7_main (void) {
 		debugOutput(errorCode);
 	}
 	
+	*SCFG_CLK = 0x0180;
+
 	debugOutput (ERR_STS_HOOK_BIN);
 
 	arm7_startBinary();
