@@ -35,57 +35,57 @@ void VblankHandler(void) {
 // Merged Power on and Power off slot sequence. Don't need them seperate for now.
 void ResetSlot() {
 	
-	volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
-	volatile u32* ROMCTRL = (volatile u32*)0x40001A4; 
-	volatile u32* SCFG_MC = (volatile u32*)0x4004010; 
+	//volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
+	//volatile u32* ROMCTRL = (volatile u32*)0x40001A4; 
+	//volatile u32* SCFG_MC = (volatile u32*)0x4004010; 
 	
 	// Power off Slot
-	while(*SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
-	if(*SCFG_MC&0x0C != 0x08) return; 		// exit if state<>2      
+	while(REG_SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
+	if(REG_SCFG_MC&0x0C != 0x08) return; 		// exit if state<>2      
 	
-	*SCFG_MC = 0x0C;          		// set state=3 
-	while(*SCFG_MC&0x0C !=  0x00);  // wait until state=0
+	REG_SCFG_MC = 0x0C;          		// set state=3 
+	while(REG_SCFG_MC&0x0C !=  0x00);  // wait until state=0
 
 	// Power On Slot
-	while(*SCFG_MC&0x0C !=  0x0C); // wait until state<>3
-	if(*SCFG_MC&0x0C != 0x00) return; //  exit if state<>0
+	while(REG_SCFG_MC&0x0C !=  0x0C); // wait until state<>3
+	if(REG_SCFG_MC&0x0C != 0x00) return; //  exit if state<>0
 	
-	*SCFG_MC = 0x04;    // wait 1ms, then set state=1
-	while(*SCFG_MC&0x0C != 0x04);
+	REG_SCFG_MC = 0x04;    // wait 1ms, then set state=1
+	while(REG_SCFG_MC&0x0C != 0x04);
 	
-	*SCFG_MC = 0x08;    // wait 10ms, then set state=2      
-	while(*SCFG_MC&0x0C != 0x08);
+	REG_SCFG_MC = 0x08;    // wait 10ms, then set state=2      
+	while(REG_SCFG_MC&0x0C != 0x08);
 	
-	*ROMCTRL = 0x20000000; // wait 27ms, then set ROMCTRL=20000000h
+	REG_ROMCTRL = 0x20000000; // wait 27ms, then set ROMCTRL=20000000h
 	
-	while(*ROMCTRL&0x8000000 != 0x8000000);
+	while(REG_ROMCTRL&0x8000000 != 0x8000000);
 }
 
 int main(void) {
 
-	volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
-	volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
-	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+	// volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
+	// volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
+	// volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
 	
 	irqInit();
 	fifoInit();
 
 	// TWL mode
-	// *SCFG_ROM = 0x501;
+	// REG_SCFG_ROM = 0x501;
 	
 	// When TWL games is ever supported, SCFG will be set correctly.
-	if(*SCFG_ROM == 0x703) {
-		*SCFG_EXT = 0x92A00000;
+	if(REG_SCFG_ROM == 0x703) {
+		REG_SCFG_EXT = 0x92A00000;
 	} else {
-		if(*SCFG_ROM == 0x501) {
-			*SCFG_EXT=0x8307f100;
+		if(REG_SCFG_ROM == 0x501) {
+			REG_SCFG_EXT=0x8307f100;
 		}
 	}
 	
 	// Reset Slot command.
 	ResetSlot();
 
-	*SCFG_CLK = 0x0185;
+	REG_SCFG_CLK = 0x0185;
 	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
 	fifoSendValue32(FIFO_USER_01, 1);	
 	

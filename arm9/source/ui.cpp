@@ -40,8 +40,8 @@ void vramcpy (void* dest, const void* src, int size)
 }
 
 void main_ui() {
-	unsigned int * SCFG_MC=(unsigned int*)0x4004010;
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
+	// volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+	// volatile u32* SCFG_MC = (volatile u32*)0x4004010; 
 
 	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE);
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);
@@ -62,7 +62,7 @@ void main_ui() {
 	BootSplashNormal();
 	
 	// Load alternate UI with an error occured. Currently 2 error screns and one normal.
-	if(*SCFG_EXT == 0x0) { ErrorNoBit31(); }
-	if(*SCFG_MC == 0x11) { ErrorNoCard(); }
+	if(REG_SCFG_EXT == 0x00000000) { ErrorNoBit31(); }
+	if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 }
 

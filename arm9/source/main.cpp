@@ -30,31 +30,29 @@
 #include "version.h"
 
 
-// int main(int argc, const char* argv[])
 int main() {
 
-	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
-	volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
-	volatile u32* SCFG_MC = (volatile u32*)0x4004010; 	
+	//volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+	//volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
+	//volatile u32* SCFG_MC = (volatile u32*)0x4004010; 	
 	
-	*SCFG_CLK = 0x85;
+	REG_SCFG_CLK = 0x85;
 	
 	// Waits for arm7 to power off slot before continuing
 	fifoWaitValue32(FIFO_USER_01);
 	
 	swiWaitForVBlank();
 	
-	// Disabled until libnds can be fixed
 	main_ui();
 	
 	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
-	if(*SCFG_MC == 0x11) { 
+	if(REG_SCFG_MC == 0x11) { 
 	// Do nothing. Card init fails and code from NitroHax that fixes this doesn't work here yet.
 	} else { 
 		// SCFG_EXT is never actually all zero in NTR mode (just not readable in NTR mode).
 		// If it reports as zero that means bit31 was not patched out.
 		// We'll indicate to the user that they have not patched it out correctly.
-		if(*SCFG_EXT == 0x00000000) {
+		if(REG_SCFG_EXT == 0x00000000) {
 			// Do nothing
 		} else {
 				runLaunchEngine ();

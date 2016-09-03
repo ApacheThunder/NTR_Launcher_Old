@@ -72,7 +72,6 @@ BINFILES	:=	$(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.*))) soundbank.bi
 
 BMPFILES	:=	$(foreach dir,$(IMAGES),$(notdir $(wildcard $(dir)/*.bmp)))
 
-
 #---------------------------------------------------------------------------------
 # use CXX for linking C++ projects, CC for standard C
 #---------------------------------------------------------------------------------
@@ -416,11 +415,6 @@ DSi35.s			:	../$(IMAGES)/DSi35.bmp
 
 DSi36.s			:	../$(IMAGES)/DSi36.bmp
 	grit	$< -gB8 -gzl -fts -o $@ -q
-
-#---------------------------------------------------------------------------------
-# The bin2o rule should be copied and modified
-# for each extension used in the data directories
-#---------------------------------------------------------------------------------
 
 #---------------------------------------------------------------------------------
 # rule to build soundbank from music files
