@@ -30,3 +30,4 @@ void getHeader (u32* ndsHeader) {
 		ndsHeader, 512);
 
 }
+

@@ -22,6 +22,14 @@ void runLaunchEngineCheck (void)
 {
 	if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
 	{
+
+		// SCFG_CLK
+		// 0x0180 : NTR
+		// 0x0187 : TWL
+		REG_SCFG_CLK=0x0180;
+		REG_SCFG_ROM=0x703;
+		REG_SCFG_EXT = 0x12A00000;
+
 		irqDisable (IRQ_ALL);
 		*((vu32*)0x027FFE34) = (u32)0x06000000;
 

@@ -141,9 +141,6 @@ Jumps to the ARM9 NDS binary in sync with the display and ARM7
 Written by Darkain, modified by Chishm
 --------------------------------------------------------------------------*/
 void arm9_main (void) {
-
-	volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
-	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
 	
 	register int i;
 	
@@ -218,13 +215,7 @@ void arm9_main (void) {
 	VRAM_G_CR = 0;
 	VRAM_H_CR = 0;
 	VRAM_I_CR = 0;
-	REG_POWERCNT  = 0x820F;
-
-	
-	// Most SCFG can be set here. However setting Bit31 to zero will lock SCFG if bit31 is set to 1 on arm7.
-	// *SCFG_EXT=0x830F0100;
-	*SCFG_EXT=0x02000000;
-	
+	REG_POWERCNT  = 0x820F;	
 	
 	// set ARM9 state to ready and wait for it to change again
 	arm9_stateFlag = ARM9_READY;
