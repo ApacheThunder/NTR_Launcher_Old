@@ -34,8 +34,11 @@
 int main() {
 
 	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+	volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
 	volatile u32* SCFG_MC = (volatile u32*)0x4004010; 	
-
+	
+	*SCFG_CLK = 0x85;
+	
 	// Waits for arm7 to power off slot before continuing
 	fifoWaitValue32(FIFO_USER_01);
 	

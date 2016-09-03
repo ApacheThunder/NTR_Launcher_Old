@@ -234,11 +234,10 @@ void arm7_main (void) {
 	volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
 	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
 
+	
 	*SCFG_ROM = 0x703;
-
+	*SCFG_CLK = 0x180;
 	// *SCFG_EXT = 0x80000000;
-	*SCFG_CLK = 0x0180;
-
 	*SCFG_EXT=0x12A00000;
 
 	int errorCode;

@@ -37,8 +37,6 @@ void vramcpy (void* dst, const void* src, int len)
 void runLaunchEngine (void)
 {
 
-	unsigned int * SCFG_EXT=(unsigned int*)0x4004008;
-
 	irqDisable(IRQ_ALL);
 
 	// Direct CPU access to VRAM bank C
@@ -52,11 +50,14 @@ void runLaunchEngine (void)
 
 	// Give the VRAM to the ARM7
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_ARM7_0x06000000;
-		
-	// Sets SCFG_EXT to 0x02000000 (what it's normally set to in NTR mode. Note that arm9 does not touch bit31. Only arm7 can do that)
-	// Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
+
+	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+	volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
+	// Sets SCFG_EXT to normal. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
 	// So this will help fix compatibility issues with games that have issue with the new patch.
-	*SCFG_EXT=0x02000000;
+	
+	*SCFG_CLK=0x80;
+	*SCFG_EXT=0x03000000;
 
 	// Reset into a passme loop
 	REG_EXMEMCNT = 0xffff;
