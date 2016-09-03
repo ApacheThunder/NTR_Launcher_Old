@@ -45,19 +45,23 @@ int main() {
 	
 	main_ui();
 	
-	// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
-	if(REG_SCFG_MC == 0x11) { 
-	// Do nothing. Card init fails and code from NitroHax that fixes this doesn't work here yet.
-	} else { 
-		// SCFG_EXT is never actually all zero in NTR mode (just not readable in NTR mode).
-		// If it reports as zero that means bit31 was not patched out.
-		// We'll indicate to the user that they have not patched it out correctly.
-		if(REG_SCFG_EXT == 0x00000000) {
-			// Do nothing
-		} else {
+	while(1) {
+		// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
+		if(REG_SCFG_MC == 0x11) { 
+		break;
+		// Do nothing. Card init fails and code from NitroHax that fixes this doesn't work here yet.
+		} else { 
+			// SCFG_EXT is never actually all zero in NTR mode (just not readable in NTR mode).
+			// If it reports as zero that means bit31 was not patched out.
+			// We'll indicate to the user that they have not patched it out correctly.
+			if(REG_SCFG_EXT == 0x00000000) {
+				// Do nothing
+				break;
+			} else {
 				runLaunchEngine ();
 			}
+		}
 	}
-
+	return 0;
 }
 
