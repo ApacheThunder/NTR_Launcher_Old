@@ -229,16 +229,17 @@ void arm7_startBinary (void)
 // Main function
 
 void arm7_main (void) {
-
+	
+	// No longer set here.
 	// volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
 	// volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
 	// volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
 
 	
-	REG_SCFG_ROM = 0x703;
-	REG_SCFG_CLK = 0x180;
+	// REG_SCFG_ROM = 0x703;
+	// REG_SCFG_CLK = 0x180;
 	// REG_SCFG_EXT = 0x80000000;
-	REG_SCFG_EXT=0x12A00000;
+	// REG_SCFG_EXT=0x12A00000;
 
 	int errorCode;
 	

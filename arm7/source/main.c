@@ -85,7 +85,7 @@ int main(void) {
 	// Reset Slot command.
 	ResetSlot();
 
-	REG_SCFG_CLK = 0x0185;
+	REG_SCFG_CLK = 0x0187;
 	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
 	fifoSendValue32(FIFO_USER_01, 1);	
 	

@@ -11,7 +11,7 @@ export TARGET		:=	NTR_Launcher
 export TOPDIR		:=	$(CURDIR)
 
 export VERSION_MAJOR	:= 1
-export VERSION_MINOR	:= 2_alt
+export VERSION_MINOR	:= 3_alt
 export VERSTRING	:=	$(VERSION_MAJOR).$(VERSION_MINOR)
 
 #---------------------------------------------------------------------------------
@@ -89,4 +89,5 @@ clean:
 	$(MAKE) -C arm7 clean
 	$(MAKE) -C BootLoader clean
 	rm -f arm9/data/load.bin
+	rm -f arm9/source/version.h
 	rm -f $(TARGET).ds.gba $(TARGET).nds $(TARGET).arm7 $(TARGET).arm9

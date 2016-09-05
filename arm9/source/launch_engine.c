@@ -51,13 +51,10 @@ void runLaunchEngine (void)
 	// Give the VRAM to the ARM7
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_ARM7_0x06000000;
 
-	volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
-	volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
-	// Sets SCFG_EXT to normal. Arm7 sets bit31 to 1. This results in SCFG getting locked out again.
-	// So this will help fix compatibility issues with games that have issue with the new patch.
+	// volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
 	
-	*SCFG_CLK=0x80;
-	*SCFG_EXT=0x03000000;
+	REG_SCFG_EXT=0x03000000;
+	// REG_SCFG_EXT=0x030F0100;
 
 	// Reset into a passme loop
 	REG_EXMEMCNT = 0xffff;
