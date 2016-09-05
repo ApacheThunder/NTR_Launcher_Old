@@ -22,8 +22,10 @@
 
 #include "soundbank.h"
 #include "soundbank_bin.h"
- 
+  
 #include "bios_decompress_callback.h"
+
+#include "errorsplash.h"
 
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
@@ -146,7 +148,11 @@ void BootJingleDSi() {
 }
 
 void BootSplashNormal() {
-
+	
+	scanKeys();
+	
+	int pressed = keysDown();
+		
 	// volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
 	
 	// offsetting palletes by one frame during the fade in seems to fix black flicker at start.	
@@ -208,8 +214,9 @@ void BootSplashNormal() {
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
 	// Once frame 8 is reached boot jingle sound effect plays
-	if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) { BootJingle(); } else { BootJingleDSi(); }
-
+	// if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) { BootJingle(); } else { BootJingleDSi(); }
+	if ( pressed & KEY_B ) { BootJingleDSi(); } else { BootJingle(); }
+	
 	swiDecompressLZSSVram ((void*)Top06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top06Pal, Top06PalLen);
 
@@ -269,8 +276,12 @@ void BootSplashNormal() {
 	vramcpy2 (&BG_PALETTE[0], Top17Pal, Top17PalLen);
 
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-	if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) {
-
+	// if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) {
+	
+	if ( pressed & KEY_B ) { BootSplashDSi(); } else {
+		
+		fifoSendValue32(FIFO_USER_02, 1); 
+		
 		swiDecompressLZSSVram ((void*)Top18Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 		vramcpy2 (&BG_PALETTE[0], Top18Pal, Top18PalLen);
 
@@ -382,7 +393,16 @@ void BootSplashNormal() {
 
 		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 		
-		} else { BootSplashDSi(); }
+		// if(REG_SCFG_EXT == 0x00000000) { ErrorNoBit31(); }
+		if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
+		
+		swiWaitForVBlank();
+
+		// Set NTR mode clock speeds. DSi Mode Splash will leave this untouched.
+		REG_SCFG_CLK=0x80;
+		
+		swiWaitForVBlank();
+		}
 }
 
 void BootSplashDSi() {
@@ -494,6 +514,8 @@ void BootSplashDSi() {
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
 	swiDecompressLZSSVram ((void*)Top37Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	vramcpy2 (&BG_PALETTE[0], Top37Pal, Top37PalLen);	
+	vramcpy2 (&BG_PALETTE[0], Top37Pal, Top37PalLen);
+	
+	if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 }
 
