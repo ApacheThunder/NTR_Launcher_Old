@@ -22,14 +22,13 @@
 
 #include "soundbank.h"
 #include "soundbank_bin.h"
- 
+  
 #include "bios_decompress_callback.h"
 
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
 
 #include "bootsplash.h"
-#include "errorsplash.h"
 
 
 #include "Bot00.h"
@@ -114,20 +113,19 @@ void vramcpy2 (void* dest, const void* src, int size)
 }
 
 void BootJingle() {
-
 	mmInitDefaultMem((mm_addr)soundbank_bin);
 	
-	mmLoadEffect( SFX_BOOM );
+	mmLoadEffect( SFX_DSBOOT );
 
-	mm_sound_effect boom = {
-		{ SFX_BOOM } ,			// id
+	mm_sound_effect dsboot = {
+		{ SFX_DSBOOT } ,			// id
 		(int)(1.0f * (1<<10)),	// rate
 		0,		// handle
 		255,	// volume
 		128,	// panning
 	};
 	
-	mmEffectEx(&boom);
+	mmEffectEx(&dsboot);
 }
 
 void BootJingleDSi() {
@@ -146,15 +144,17 @@ void BootJingleDSi() {
 	
 	mmEffectEx(&dsiboot);
 }
- 
+
 void BootSplashNormal() {
 
-	// volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
-
-	scanKeys();
-
+	scanKeys();	
 	int pressed = keysDown();
 
+
+	// Boot Splash plays unless user holds B on boot.
+	if ( pressed & KEY_B ) { for (int i = 0; i < 10; i++) { swiWaitForVBlank(); } } else {
+	// volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
+	
 	// offsetting palletes by one frame during the fade in seems to fix black flicker at start.	
 	// only did this for about 5 frames. (time it takes for bottom screen to fade in)
 	swiDecompressLZSSVram ((void*)Top00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
@@ -215,8 +215,8 @@ void BootSplashNormal() {
 
 	// Once frame 8 is reached boot jingle sound effect plays
 	// if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) { BootJingle(); } else { BootJingleDSi(); }
-	if ( pressed & KEY_B ) { BootJingleDSi(); } else { BootJingle(); }
-
+	if ( pressed & KEY_A ) { BootJingleDSi(); } else { BootJingle(); }
+	
 	swiDecompressLZSSVram ((void*)Top06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top06Pal, Top06PalLen);
 
@@ -276,9 +276,9 @@ void BootSplashNormal() {
 	vramcpy2 (&BG_PALETTE[0], Top17Pal, Top17PalLen);
 
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
 	// if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) {
-	if ( pressed & KEY_B ) { BootSplashDSi(); } else {
+	
+	if ( pressed & KEY_A ) { BootSplashDSi(); } else {
 		
 		fifoSendValue32(FIFO_USER_02, 1); 
 		
@@ -351,7 +351,7 @@ void BootSplashNormal() {
 		vramcpy2 (&BG_PALETTE[0], Top31Pal, Top31PalLen);
 
 		// Pause on frame 31 for a second
-		for (int i = 0; i < 120; i++) { swiWaitForVBlank(); }
+		for (int i = 0; i < 60; i++) { swiWaitForVBlank(); }
 	
 		swiDecompressLZSSVram ((void*)Top32Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 		swiDecompressLZSSVram ((void*)Bot06Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
@@ -392,16 +392,14 @@ void BootSplashNormal() {
 		vramcpy2 (&BG_PALETTE[0], Top37Pal, Top37PalLen);
 
 		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-	
-		// if(REG_SCFG_EXT == 0x00000000) { ErrorNoBit31(); }
-		if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 		
 		swiWaitForVBlank();
 
 		// Set NTR mode clock speeds. DSi Mode Splash will leave this untouched.
-		REG_SCFG_CLK = 0x80;
+		REG_SCFG_CLK=0x80;
 		
 		swiWaitForVBlank();
+		}
 	}
 }
 
@@ -476,7 +474,7 @@ void BootSplashDSi() {
 	vramcpy2 (&BG_PALETTE[0], DSi31Pal, DSi31PalLen);
 
 	// Pause on frame 31 for a second
-	for (int i = 0; i < 120; i++) { swiWaitForVBlank(); }
+	for (int i = 0; i < 60; i++) { swiWaitForVBlank(); }
 	
 	swiDecompressLZSSVram ((void*)DSi32Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)Bot06Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
@@ -515,9 +513,5 @@ void BootSplashDSi() {
 
 	swiDecompressLZSSVram ((void*)Top37Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top37Pal, Top37PalLen);
-
-	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-	
-	if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 }
 

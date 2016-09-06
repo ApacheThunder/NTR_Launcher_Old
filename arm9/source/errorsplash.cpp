@@ -36,6 +36,7 @@
 #include "suberror05.h"
 #include "suberror06.h"
 
+/* Not used for now
 #include "toperror1_00.h"
 #include "toperror1_01.h"
 #include "toperror1_02.h"
@@ -43,6 +44,7 @@
 #include "toperror1_04.h"
 #include "toperror1_05.h"
 #include "toperror1_06.h"
+*/
 
 #include "toperror2_00.h"
 #include "toperror2_01.h"
@@ -64,7 +66,7 @@ void vramcpy3 (void* dest, const void* src, int size)
 
 void FadeFX() {
 
-	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+ 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
 	swiDecompressLZSSVram ((void*)fade00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)fade00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
@@ -102,11 +104,11 @@ void FadeFX() {
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 }
 
-
+/*
 void ErrorNoBit31() {
 	
 	FadeFX();
-	
+
  	swiDecompressLZSSVram ((void*)toperror1_00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror1_00Pal, toperror1_00PalLen);
@@ -133,8 +135,6 @@ void ErrorNoBit31() {
 	vramcpy3 (&BG_PALETTE[0], toperror1_03Pal, toperror1_03PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror03Pal, suberror03PalLen);
 	
-	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-	
 	// Wait for input, then fade out
 	do { swiWaitForVBlank(); scanKeys(); } while (!keysDown());
 
@@ -150,6 +150,8 @@ void ErrorNoBit31() {
 	vramcpy3 (&BG_PALETTE[0], toperror1_05Pal, toperror1_05PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror05Pal, suberror05PalLen);
 	
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	
  	swiDecompressLZSSVram ((void*)toperror1_06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror06Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror1_06Pal, toperror1_06PalLen);
@@ -164,7 +166,7 @@ void ErrorNoBit31() {
 	
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 }
-
+*/
 
 void ErrorNoCard() {
 	
