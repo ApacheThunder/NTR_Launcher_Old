@@ -36,6 +36,7 @@
 #include "suberror05.h"
 #include "suberror06.h"
 
+/* Not used for now
 #include "toperror1_00.h"
 #include "toperror1_01.h"
 #include "toperror1_02.h"
@@ -43,6 +44,7 @@
 #include "toperror1_04.h"
 #include "toperror1_05.h"
 #include "toperror1_06.h"
+*/
 
 #include "toperror2_00.h"
 #include "toperror2_01.h"
@@ -64,45 +66,45 @@ void vramcpy3 (void* dest, const void* src, int size)
 
 void FadeFX() {
 
- 	swiWaitForVBlank();
+ 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
 	swiDecompressLZSSVram ((void*)fade00Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)fade00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], fade00Pal, fade00PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], fade00Pal, fade00PalLen);
 
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
  	swiDecompressLZSSVram ((void*)fade01Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)fade01Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], fade01Pal, fade01PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], fade01Pal, fade01PalLen);
 
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
  	swiDecompressLZSSVram ((void*)fade02Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)fade02Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], fade02Pal, fade02PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], fade02Pal, fade02PalLen);
 
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
  	swiDecompressLZSSVram ((void*)fade03Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)fade03Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], fade03Pal, fade03PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], fade03Pal, fade03PalLen);
 
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
  	swiDecompressLZSSVram ((void*)fade04Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)fade04Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], fade04Pal, fade04PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], fade04Pal, fade04PalLen);	
 
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 }
 
-
+/*
 void ErrorNoBit31() {
 	
 	FadeFX();
@@ -112,28 +114,26 @@ void ErrorNoBit31() {
 	vramcpy3 (&BG_PALETTE[0], toperror1_00Pal, toperror1_00PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror00Pal, suberror00PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
  	swiDecompressLZSSVram ((void*)toperror1_01Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror01Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror1_01Pal, toperror1_01PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror01Pal, suberror01PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
  	swiDecompressLZSSVram ((void*)toperror1_02Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror02Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror1_02Pal, toperror1_02PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror02Pal, suberror02PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
  	swiDecompressLZSSVram ((void*)toperror1_03Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror03Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror1_03Pal, toperror1_03PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror03Pal, suberror03PalLen);
-	
-	swiWaitForVBlank();
 	
 	// Wait for input, then fade out
 	do { swiWaitForVBlank(); scanKeys(); } while (!keysDown());
@@ -143,27 +143,30 @@ void ErrorNoBit31() {
 	vramcpy3 (&BG_PALETTE[0], toperror1_04Pal, toperror1_04PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror04Pal, suberror04PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
  	swiDecompressLZSSVram ((void*)toperror1_05Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror05Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror1_05Pal, toperror1_05PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror05Pal, suberror05PalLen);
 	
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	
  	swiDecompressLZSSVram ((void*)toperror1_06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror06Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror1_06Pal, toperror1_06PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror06Pal, suberror06PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
 	swiDecompressLZSSVram ((void*)fade04Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)fade04Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], fade04Pal, fade04PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], fade04Pal, fade04PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 }
+*/
 
 void ErrorNoCard() {
 	
@@ -174,28 +177,28 @@ void ErrorNoCard() {
 	vramcpy3 (&BG_PALETTE[0], toperror2_00Pal, toperror2_00PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror00Pal, suberror00PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
  	swiDecompressLZSSVram ((void*)toperror2_01Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror01Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror2_01Pal, toperror2_01PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror01Pal, suberror01PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
  	swiDecompressLZSSVram ((void*)toperror2_02Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror02Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror2_02Pal, toperror2_02PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror02Pal, suberror02PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
  	swiDecompressLZSSVram ((void*)toperror2_03Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror03Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], toperror2_03Pal, toperror2_03PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror03Pal, suberror03PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
 	// Wait for input, then fade out
 	do { swiWaitForVBlank(); scanKeys(); } while (!keysDown());
@@ -205,7 +208,7 @@ void ErrorNoCard() {
 	vramcpy3 (&BG_PALETTE[0], toperror2_04Pal, toperror2_04PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror04Pal, suberror04PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
  	swiDecompressLZSSVram ((void*)toperror2_05Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)suberror05Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
@@ -217,13 +220,13 @@ void ErrorNoCard() {
 	vramcpy3 (&BG_PALETTE[0], toperror2_06Pal, toperror2_06PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], suberror06Pal, suberror06PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
 	swiDecompressLZSSVram ((void*)fade04Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	swiDecompressLZSSVram ((void*)fade04Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy3 (&BG_PALETTE[0], fade04Pal, fade04PalLen);
 	vramcpy3 (&BG_PALETTE_SUB[0], fade04Pal, fade04PalLen);
 	
-	swiWaitForVBlank();
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 }
 

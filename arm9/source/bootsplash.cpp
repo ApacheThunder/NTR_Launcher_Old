@@ -25,8 +25,6 @@
   
 #include "bios_decompress_callback.h"
 
-#include "errorsplash.h"
-
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
 
@@ -117,17 +115,17 @@ void vramcpy2 (void* dest, const void* src, int size)
 void BootJingle() {
 	mmInitDefaultMem((mm_addr)soundbank_bin);
 	
-	mmLoadEffect( SFX_BOOM );
+	mmLoadEffect( SFX_DSBOOT );
 
-	mm_sound_effect boom = {
-		{ SFX_BOOM } ,			// id
+	mm_sound_effect dsboot = {
+		{ SFX_DSBOOT } ,			// id
 		(int)(1.0f * (1<<10)),	// rate
 		0,		// handle
 		255,	// volume
 		128,	// panning
 	};
 	
-	mmEffectEx(&boom);
+	mmEffectEx(&dsboot);
 }
 
 void BootJingleDSi() {
@@ -148,11 +146,13 @@ void BootJingleDSi() {
 }
 
 void BootSplashNormal() {
-	
-	scanKeys();
-	
+
+	scanKeys();	
 	int pressed = keysDown();
-		
+
+
+	// Boot Splash plays unless user holds B on boot.
+	if ( pressed & KEY_B ) { for (int i = 0; i < 10; i++) { swiWaitForVBlank(); } } else {
 	// volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
 	
 	// offsetting palletes by one frame during the fade in seems to fix black flicker at start.	
@@ -215,7 +215,7 @@ void BootSplashNormal() {
 
 	// Once frame 8 is reached boot jingle sound effect plays
 	// if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) { BootJingle(); } else { BootJingleDSi(); }
-	if ( pressed & KEY_B ) { BootJingleDSi(); } else { BootJingle(); }
+	if ( pressed & KEY_A ) { BootJingleDSi(); } else { BootJingle(); }
 	
 	swiDecompressLZSSVram ((void*)Top06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top06Pal, Top06PalLen);
@@ -278,7 +278,7 @@ void BootSplashNormal() {
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	// if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) {
 	
-	if ( pressed & KEY_B ) { BootSplashDSi(); } else {
+	if ( pressed & KEY_A ) { BootSplashDSi(); } else {
 		
 		fifoSendValue32(FIFO_USER_02, 1); 
 		
@@ -393,9 +393,6 @@ void BootSplashNormal() {
 
 		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 		
-		// if(REG_SCFG_EXT == 0x00000000) { ErrorNoBit31(); }
-		if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
-		
 		swiWaitForVBlank();
 
 		// Set NTR mode clock speeds. DSi Mode Splash will leave this untouched.
@@ -403,6 +400,7 @@ void BootSplashNormal() {
 		
 		swiWaitForVBlank();
 		}
+	}
 }
 
 void BootSplashDSi() {
@@ -515,7 +513,5 @@ void BootSplashDSi() {
 
 	swiDecompressLZSSVram ((void*)Top37Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy2 (&BG_PALETTE[0], Top37Pal, Top37PalLen);
-	
-	if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 }
 

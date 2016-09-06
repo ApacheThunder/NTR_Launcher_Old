@@ -23,6 +23,7 @@
 #include "bios_decompress_callback.h"
 
 #include "bootsplash.h"
+#include "errorsplash.h"
 
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
@@ -55,7 +56,9 @@ void main_ui() {
 		bgMapSub[i] = (u16)i;
 	}
 
-	// Boot Splash will always play.
 	BootSplashNormal();
+	
+	// if(REG_SCFG_EXT == 0x00000000) { ErrorNoBit31(); }
+	if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 }
 
