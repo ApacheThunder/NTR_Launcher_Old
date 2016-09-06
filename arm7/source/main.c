@@ -67,12 +67,15 @@ int main(void) {
 	// volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
 	// volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
 	
+	REG_SCFG_EXT = 0x93FFFB00; // NAND/SD Access
+	
 	irqInit();
 	fifoInit();
 
 	// TWL mode
 	// REG_SCFG_ROM = 0x501;
 	
+	/*
 	// When TWL games is ever supported, SCFG will be set correctly.
 	if(REG_SCFG_ROM == 0x703) {
 		REG_SCFG_EXT = 0x92A00000;
@@ -81,6 +84,7 @@ int main(void) {
 			REG_SCFG_EXT=0x8307f100;
 		}
 	}
+	*/
 	
 	// Reset Slot command.
 	ResetSlot();

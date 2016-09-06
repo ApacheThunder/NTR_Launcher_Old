@@ -37,6 +37,7 @@ int main() {
 	//volatile u32* SCFG_MC = (volatile u32*)0x4004010; 	
 	
 	REG_SCFG_CLK = 0x85;
+	REG_SCFG_EXT = 0x8307F100; // NAND/SD Access
 	
 	// Waits for arm7 to power off slot before continuing
 	fifoWaitValue32(FIFO_USER_01);
