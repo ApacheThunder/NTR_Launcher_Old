@@ -79,8 +79,9 @@ int main(void) {
 	irqInit();
 	fifoInit();
 
-	REG_SCFG_CLK=0x0187;
-	REG_SCFG_EXT=0x92A00000;
+	REG_SCFG_CLK = 0x0187;
+	REG_SCFG_EXT = 0x93FFFB00; // NAND/SD Access
+	// REG_SCFG_EXT=0x92A00000;
 
 	// read User Settings from firmware
 	readUserSettings();
