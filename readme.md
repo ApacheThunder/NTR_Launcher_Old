@@ -11,4 +11,5 @@ Credits go to Chism for NitroHax which this source is based from.
 ahezard's fork of libnds and maxmod are required to compile this. You can find them there:
 
 https://github.com/ahezard/libnds
+
 https://github.com/devkitPro/maxmod
