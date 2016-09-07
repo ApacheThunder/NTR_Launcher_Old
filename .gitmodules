@@ -1,6 +1,0 @@
-[submodule "libnds"]
-	path = libnds
-	url = https://github.com/ahezard/libnds.git
-[submodule "maxmod"]
-	path = maxmod
-	url = https://github.com/devkitPro/maxmod.git
