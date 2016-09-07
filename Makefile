@@ -2,7 +2,7 @@
 .SUFFIXES:
 #---------------------------------------------------------------------------------
 ifeq ($(strip $(DEVKITARM)),)
-$(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM)
+$(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>devkitARM")
 endif
 
 include $(DEVKITARM)/ds_rules
@@ -26,13 +26,21 @@ export PATH		:=	$(DEVKITARM)/bin:$(PATH)
 #---------------------------------------------------------------------------------
 all: $(TARGET).nds
 
-$(TARGET).nds	:	$(TARGET).arm7 $(TARGET).arm9
+$(TARGET).nds	:	$(TARGET).libnds $(TARGET).maxmod $(TARGET).arm7 $(TARGET).arm9
 	ndstool	-c $(TARGET).nds -7 arm7/$(TARGET).arm7.elf -9 arm9/$(TARGET).arm9.elf \
 			-b $(CURDIR)/icon.bmp "NTR Slot-1 Launcher;Modification of NitroHax by Chishm;Apache Thunder"
 
 #---------------------------------------------------------------------------------
 $(TARGET).arm7	: arm7/$(TARGET).elf
 $(TARGET).arm9	: arm9/$(TARGET).elf
+
+#---------------------------------------------------------------------------------
+$(TARGET).libnds :
+	$(MAKE) -C libnds
+	
+#---------------------------------------------------------------------------------	
+$(TARGET).maxmod :
+	$(MAKE) -C maxmod
 
 #---------------------------------------------------------------------------------
 BootLoader/load.bin	:	BootLoader/source/*
@@ -88,6 +96,8 @@ clean:
 	$(MAKE) -C arm9 clean
 	$(MAKE) -C arm7 clean
 	$(MAKE) -C BootLoader clean
+	$(MAKE) -C libnds clean
+	$(MAKE) -C maxmod clean
 	rm -f arm9/data/load.bin
 	rm -f arm9/source/version.h
 	rm -f $(TARGET).ds.gba $(TARGET).nds $(TARGET).arm7 $(TARGET).arm9
