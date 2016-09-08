@@ -32,7 +32,6 @@ void VcountHandler() {
 void VblankHandler(void) {
 }
 
-// Merged Power on and Power off slot sequence. Don't need them seperate for now.
 void ResetSlot() {
 	
 	//volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
@@ -71,28 +70,11 @@ int main(void) {
 	
 	irqInit();
 	fifoInit();
-
-	// TWL mode
-	// REG_SCFG_ROM = 0x501;
 	
-	/*
-	// When TWL games is ever supported, SCFG will be set correctly.
-	if(REG_SCFG_ROM == 0x703) {
-		REG_SCFG_EXT = 0x92A00000;
-	} else {
-		if(REG_SCFG_ROM == 0x501) {
-			REG_SCFG_EXT=0x8307f100;
-		}
-	}
-	*/
-	
-	// Reset Slot command.
 	ResetSlot();
 
 	REG_SCFG_CLK = 0x0187;
-	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
-	fifoSendValue32(FIFO_USER_01, 1);	
-	
+
 	// read User Settings from firmware
 	readUserSettings();
 
@@ -110,6 +92,9 @@ int main(void) {
 	irqSet(IRQ_VBLANK, VblankHandler);
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT);
+
+	// Tells arm9 to continue after powering off slot. (so that card init does not occur too soon)
+	fifoSendValue32(FIFO_USER_01, 1);	
 
 	while (1) {
 		runLaunchEngineCheck();

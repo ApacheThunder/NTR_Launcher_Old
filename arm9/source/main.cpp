@@ -23,7 +23,8 @@
 #include <list>
 #include <nds/fifocommon.h>
 
-#include "ui.h"
+#include "bootsplash.h"
+
 #include "nds_card.h"
 #include "launch_engine.h"
 #include "crc.h"
@@ -36,31 +37,22 @@ int main() {
 	//volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
 	//volatile u32* SCFG_MC = (volatile u32*)0x4004010; 	
 	
+	dsi_forceTouchDsmode();
+
 	REG_SCFG_CLK = 0x85;
 	REG_SCFG_EXT = 0x8307F100; // NAND/SD Access
-	
+
+	BootSplashNormal();
+
 	// Waits for arm7 to power off slot before continuing
 	fifoWaitValue32(FIFO_USER_01);
-	
+
 	swiWaitForVBlank();
-	
-	main_ui();
-	
+
 	while(1) {
-		// For now, program stops here if slot is detected as ejected (booted when no cartridge was inserted)
 		if(REG_SCFG_MC == 0x11) { 
-		break;
-		// Do nothing. Card init fails and code from NitroHax that fixes this doesn't work here yet.
-		} else { 
-			// SCFG_EXT is never actually all zero in NTR mode (just not readable in NTR mode).
-			// If it reports as zero that means bit31 was not patched out.
-			// We'll indicate to the user that they have not patched it out correctly.
-			if(REG_SCFG_EXT == 0x00000000) {
-				// Do nothing
-				break;
-			} else {
-				runLaunchEngine ();
-			}
+		break; } else {
+			runLaunchEngine ();
 		}
 	}
 	return 0;

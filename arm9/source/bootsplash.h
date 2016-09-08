@@ -23,9 +23,9 @@
 extern "C" {
 #endif
 
-void BootJingle (void);
+void vramcpy_ui (void* dest, const void* src, int size);
 
-void BootJingleDSi (void);
+void BootJingle (void);
 
 void BootSplashNormal (void);
 
