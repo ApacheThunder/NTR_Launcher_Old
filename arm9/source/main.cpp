@@ -42,10 +42,10 @@ int main() {
 	REG_SCFG_EXT = 0x8307F100; // NAND/SD Access
 
 	swiWaitForVBlank();
-
-	fifoWaitValue32(FIFO_USER_01);
 	
 	BootSplashNormal();
+
+	fifoWaitValue32(FIFO_USER_01);
 
 	swiWaitForVBlank();
 
