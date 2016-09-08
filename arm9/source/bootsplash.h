@@ -23,6 +23,8 @@
 extern "C" {
 #endif
 
+void vramcpy_ui (void* dest, const void* src, int size);
+
 void BootJingle (void);
 
 void BootSplashNormal (void);
