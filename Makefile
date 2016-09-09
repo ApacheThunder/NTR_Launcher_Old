@@ -11,7 +11,7 @@ export TARGET		:=	NTR_Launcher
 export TOPDIR		:=	$(CURDIR)
 
 export VERSION_MAJOR	:= 1
-export VERSION_MINOR	:= 5_alt
+export VERSION_MINOR	:= 6_alt
 export VERSTRING	:=	$(VERSION_MAJOR).$(VERSION_MINOR)
 
 #---------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ all: $(TARGET).nds
 
 $(TARGET).nds	:	$(TARGET).arm7 $(TARGET).arm9
 	ndstool	-c $(TARGET).nds -7 arm7/$(TARGET).arm7.elf -9 arm9/$(TARGET).arm9.elf \
-			-b $(CURDIR)/icon.bmp "NTR Launcher (TWL mode);Modification of NitroHax by Chishm;Apache Thunder"
+			-b $(CURDIR)/icon.bmp "NTR Launcher(Alt Build);Modification of NitroHax by Chishm;Apache Thunder"
 
 #---------------------------------------------------------------------------------
 $(TARGET).arm7	: arm7/$(TARGET).elf
