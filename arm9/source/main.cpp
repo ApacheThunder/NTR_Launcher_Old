@@ -40,6 +40,10 @@ int main(int argc, const char* argv[]) {
 
 	swiWaitForVBlank();
 
+	// If slot is powered off, tell Arm7 slot power on is required.
+	if(REG_SCFG_MC == 0x11) { fifoSendValue32(FIFO_USER_02, 1); }
+	if(REG_SCFG_MC == 0x10) { fifoSendValue32(FIFO_USER_02, 1); }
+
 	dsi_forceTouchDsmode();
 
 	u32 ndsHeader[0x80];
@@ -51,14 +55,14 @@ int main(int argc, const char* argv[]) {
 
 	// Boot Splash plays unless user holds B on boot. NTR Clock speeds always used here.
 	if ( pressed & KEY_B ) { REG_SCFG_CLK = 0x80; } else { BootSplashInit(); }
-	
-	// Boot Splash will play regardless if user tried to skip it if booted with no cartridge.
-	if(REG_SCFG_MC == 0x11) { BootSplashInit(); }
 
-	// Tell Arm7 to start Cart Reset
+	// Boot Splash will play regardless if user tried to skip it if booted with no cartridge.
+	if(REG_SCFG_MC == 0x11) { BootSplashInit(); }	
+	// Tell Arm7 it's ready for card reset (if card reset is nessecery)
 	fifoSendValue32(FIFO_USER_01, 1);
-	// Wait for Arm7 to finish Cart Reset
+	// Waits for Arm7 to finish card reset (if nessecery)
 	fifoWaitValue32(FIFO_USER_03);
+
 
 	// Wait for card to stablize before continuing
 	for (int i = 0; i < 20; i++) { swiWaitForVBlank(); }

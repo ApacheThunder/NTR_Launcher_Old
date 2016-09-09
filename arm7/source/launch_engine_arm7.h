@@ -24,9 +24,7 @@
 extern "C" {
 #endif
 
-
 void runLaunchEngineCheck (void);
-
 
 #ifdef __cplusplus
 }
