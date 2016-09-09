@@ -151,10 +151,12 @@ int cardInit (tNDSHeader* ndsHeader, u32* chipID)
 		return ERR_HEAD_CRC;
 	}
 	
+	/*
 	// Check logo CRC
 	if (ndsHeader->logoCRC16 != 0xCF56) {
 		return ERR_LOGO_CRC;
 	}
+	*/
 
 	// Initialise blowfish encryption for KEY1 commands and decrypting the secure area
 	init_keycode (*((u32*)&ndsHeader->gameCode), 2, 8);
@@ -258,7 +260,9 @@ int cardInit (tNDSHeader* ndsHeader, u32* chipID)
 		for (i = 0; i < 0x200; i ++) {
 			*secureArea++ = 0xe7ffdeff;
 		}
-		return normalChip ? ERR_SEC_NORM : ERR_SEC_OTHR;
+		// Disable error checking of secura area. This helps boot some flashcarts that do not have normal secure area.
+		// return normalChip ? ERR_SEC_NORM : ERR_SEC_OTHR;
+		return normalChip ? ERR_NONE : ERR_NONE;
 	}
 	
 	return ERR_NONE;
