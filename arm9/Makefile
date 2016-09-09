@@ -128,6 +128,19 @@ $(ARM9ELF)	:	$(OFILES)
 #---------------------------------------------------------------------------------
 # graphics
 #---------------------------------------------------------------------------------
+#Cartridge Wait Prompt (bottom screen)
+CartPrompt01.s			:	../$(IMAGES)/CartPrompt01.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+CartPrompt02.s			:	../$(IMAGES)/CartPrompt02.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+CartPrompt03.s			:	../$(IMAGES)/CartPrompt03.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+CartPrompt04.s			:	../$(IMAGES)/CartPrompt04.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
 # generic fade from white to black
 
 fade00.s			:	../$(IMAGES)/fade00.bmp

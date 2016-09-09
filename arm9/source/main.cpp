@@ -34,20 +34,43 @@
 // volatile u32* SCFG_MC = (volatile u32*)0x4004010;
 // volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
 
-int main() {
-	
+int main(int argc, const char* argv[]) {
+
+	REG_SCFG_EXT = 0x8307F100;
+
+	swiWaitForVBlank();
+
 	dsi_forceTouchDsmode();
+
+	u32 ndsHeader[0x80];
+	char gameid[4];
+	uint32_t headerCRC;
 	
-	REG_SCFG_CLK = 0x85;
-	REG_SCFG_EXT = 0x8307F100; // NAND/SD Access
+	scanKeys();
+	int pressed = keysDown();
 
-	swiWaitForVBlank();
+	// Boot Splash plays unless user holds B on boot. NTR Clock speeds always used here.
+	if ( pressed & KEY_B ) { REG_SCFG_CLK = 0x80; } else { BootSplashInit(); }
 	
-	BootSplashNormal();
+	// Boot Splash will play regardless if user tried to skip it if booted with no cartridge.
+	if(REG_SCFG_MC == 0x11) { BootSplashInit(); }
 
-	fifoWaitValue32(FIFO_USER_01);
+	// Tell Arm7 to start Cart Reset
+	fifoSendValue32(FIFO_USER_01, 1);
+	// Wait for Arm7 to finish Cart Reset
+	fifoWaitValue32(FIFO_USER_03);
 
-	swiWaitForVBlank();
+	// Wait for card to stablize before continuing
+	for (int i = 0; i < 20; i++) { swiWaitForVBlank(); }
+
+	sysSetCardOwner (BUS_OWNER_ARM9);
+
+	getHeader (ndsHeader);
+
+	for (int i = 0; i < 20; i++) { swiWaitForVBlank(); }
+	
+	memcpy (gameid, ((const char*)ndsHeader) + 12, 4);
+	headerCRC = crc32((const char*)ndsHeader, sizeof(ndsHeader));
 
 	while(1) {
 		if(REG_SCFG_MC == 0x11) { 
