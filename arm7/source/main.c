@@ -31,16 +31,7 @@ void VcountHandler() {
 void VblankHandler(void) {
 }
 
-void ResetSlot() {
-	
-	// Power off Slot
-	while(REG_SCFG_MC&0x0C !=  0x0C); 		// wait until state<>3
-	if(REG_SCFG_MC&0x0C != 0x08) return; 		// exit if state<>2      
-	
-	REG_SCFG_MC = 0x0C;          		// set state=3 
-	while(REG_SCFG_MC&0x0C !=  0x00);  // wait until state=0
-
-	for (int i = 0; i < 30; i++) { swiWaitForVBlank(); }
+void PowerOnSlot() {
 
 	// Power On Slot
 	while(REG_SCFG_MC&0x0C !=  0x0C); // wait until state<>3
@@ -55,6 +46,7 @@ void ResetSlot() {
 	REG_ROMCTRL = 0x20000000; // wait 27ms, then set ROMCTRL=20000000h
 	
 	while(REG_ROMCTRL&0x8000000 != 0x8000000);
+	
 }
 
 int main(void) {
@@ -82,13 +74,13 @@ int main(void) {
 	irqSet(IRQ_VBLANK, VblankHandler);
 
 	irqEnable( IRQ_VBLANK | IRQ_VCOUNT);
-
-	// Wait for Arm9 to tell it to continue.
+	
+	// Make sure Arm9 had a chance to check slot status
 	fifoWaitValue32(FIFO_USER_01);
-	ResetSlot();
-	// Tell Arm9 it has finished.
+	// If Arm9 reported slot is powered off, have Arm7 wait for Arm9 to be ready before card reset. This makes sure arm7 doesn't try card reset too early.
+	if(fifoCheckValue32(FIFO_USER_02)) { PowerOnSlot(); }
 	fifoSendValue32(FIFO_USER_03, 1);
-
+	
 	while (1) {
 		runLaunchEngineCheck();
 		swiWaitForVBlank();

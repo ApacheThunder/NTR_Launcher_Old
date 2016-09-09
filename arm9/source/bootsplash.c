@@ -446,7 +446,7 @@ void BootSplashDS(){
 	
 	if ( pressed & KEY_A ) { BootSplashDSi(); } else {
 		
-		fifoSendValue32(FIFO_USER_02, 1);
+		fifoSendValue32(FIFO_USER_04, 1);
 		
 		swiDecompressLZSSVram ((void*)Top18Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 		vramcpy_ui (&BG_PALETTE[0], Top18Pal, Top18PalLen);
