@@ -34,7 +34,7 @@ void vramcpy (void* dst, const void* src, int len)
 }	
 
 // Basic engine with no cheat related code.
-void runLaunchEngine (void)
+void runLaunchEngine (bool EnableSD)
 {
 
 	irqDisable(IRQ_ALL);
@@ -53,7 +53,13 @@ void runLaunchEngine (void)
 
 	// volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
 	
-	REG_SCFG_EXT=0x03000000;
+	if( EnableSD ) {
+		REG_SCFG_EXT=0x83000000;
+	} else {
+		REG_SCFG_EXT=0x03000000;
+	}
+	
+	// REG_SCFG_EXT=0x03000000;
 	// REG_SCFG_EXT=0x030F0100;
 
 	// Reset into a passme loop

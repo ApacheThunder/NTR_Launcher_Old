@@ -22,9 +22,6 @@
 #include "soundbank.h"
 #include "soundbank_bin.h"
  
-#include "bootsplash.h"
-#include "errorsplash.h"
-
 #include "bios_decompress_callback.h"
 
 #include "CartPrompt01.h"
@@ -102,6 +99,10 @@
 #include "DSi34.h"
 #include "DSi35.h"
 #include "DSi36.h"
+
+#include "errorsplash.h"
+
+#include "bootsplash.h"
 
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
@@ -318,7 +319,7 @@ void BootSplashDSi() {
 	if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 }
 
-void BootSplashDS(){
+void BootSplashDS(bool SetNTRSplash) {
 
 	int pressed = keysDown();
 
@@ -382,7 +383,12 @@ void BootSplashDS(){
 
 	// Once frame 8 is reached boot jingle sound effect plays
 	// if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) { BootJingle(); } else { BootJingleDSi(); }
-	if ( pressed & KEY_A ) { BootJingleDSi(); } else { BootJingle(); }
+	
+	if ( pressed & KEY_A ) {
+		BootJingleDSi(); 
+	} else {
+		if( SetNTRSplash ) { BootJingle(); } else { BootJingleDSi(); }
+	}
 	
 	swiDecompressLZSSVram ((void*)Top06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy_ui (&BG_PALETTE[0], Top06Pal, Top06PalLen);
@@ -443,8 +449,10 @@ void BootSplashDS(){
 	vramcpy_ui (&BG_PALETTE[0], Top17Pal, Top17PalLen);
 
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-	
+
 	if ( pressed & KEY_A ) { BootSplashDSi(); } else {
+		
+		if( SetNTRSplash ) {
 		
 		fifoSendValue32(FIFO_USER_04, 1);
 		
@@ -566,18 +574,23 @@ void BootSplashDS(){
 		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 		
 		swiWaitForVBlank();
-
+		
 		if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 
 		// Set NTR mode clock speeds. DSi Mode Splash will leave this untouched.
 		REG_SCFG_CLK = 0x80;
 		
 		swiWaitForVBlank();
+
+		} else { BootSplashDSi(); }
 	}
 }
-
-void BootSplashInit() {
+void BootSplashInit(bool UseNTRSplash) {
 	
+	bool SetNTRSplash = false;
+	
+	if( UseNTRSplash ) { SetNTRSplash = true; }
+
 	// Set TWL Clock speeds. NTR Clock speeds set at end of BootSplashDS if user chooses not to trigger BootSplashDSi at frame 18.
 	REG_SCFG_CLK = 0x85;
 	
@@ -598,7 +611,7 @@ void BootSplashInit() {
 		bgMapSub[i] = (u16)i;
 	}
 	
-	BootSplashDS();
+	BootSplashDS(SetNTRSplash);
 
 }
 
