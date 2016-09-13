@@ -51,7 +51,6 @@ void PowerOnSlot() {
 
 int main(void) {
 
-	REG_SCFG_EXT = 0x93FFFB00;
 	REG_SCFG_CLK = 0x0187;
 	
 	irqInit();

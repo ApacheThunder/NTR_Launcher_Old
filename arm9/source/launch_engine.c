@@ -34,7 +34,7 @@ void vramcpy (void* dst, const void* src, int len)
 }	
 
 // Basic engine with no cheat related code.
-void runLaunchEngine (void)
+void runLaunchEngine (bool EnableSD)
 {
 	irqDisable(IRQ_ALL);
 
@@ -50,11 +50,11 @@ void runLaunchEngine (void)
 	// Give the VRAM to the ARM7
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_ARM7_0x06000000;
 
-	// This gets set by BootSplash.cpp now. It gets set if NTR mode clk speeds are desired by user.
-	// REG_SCFG_CLK = 0x80;
-	REG_SCFG_EXT = 0x03000000;
-	// For testing TWL mode SCFG_EXT. Lave disabled else NTR games may not work properly.
-	// REG_SCFG_EXT=0x030F0100;
+	if( EnableSD ) {
+		REG_SCFG_EXT=0x83000000;
+	} else {
+		REG_SCFG_EXT=0x03000000;
+	}
 
 	// Reset into a passme loop
 	REG_EXMEMCNT = 0xffff;

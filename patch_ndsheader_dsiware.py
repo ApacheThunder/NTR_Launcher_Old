@@ -380,7 +380,7 @@ if not args.read:
 			MBK_6_8_Settings_ARM7= 	'\xc07\x00\x08@7\xc0\x07\x007@\x07',
 			MBK_6_8_Settings_ARM9= 	'\x00\x00\x00\x00@7\xc0\x07\x007@\x07',
 			accessControl=			0x00000038,
-			arm7ScfgExtMask=		0x80000000,
+			arm7ScfgExtMask=		0x80040000,
 			reserved_flags=			0x00000000,
 			arm7iLoadAddress= 		0x2E80000,
 			arm7iRomOffset= 		arm7iRomOffset,

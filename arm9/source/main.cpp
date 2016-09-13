@@ -17,6 +17,7 @@
 */
 
 #include <nds.h>
+#include <fat.h>
 #include <nds/fifocommon.h>
 
 #include <stdio.h>
@@ -24,6 +25,7 @@
 #include <malloc.h>
 #include <list>
 
+#include "inifile.h"
 #include "bootsplash.h"
 #include "nds_card.h"
 #include "launch_engine.h"
@@ -35,8 +37,10 @@
 // volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
 
 int main(int argc, const char* argv[]) {
-
-	REG_SCFG_EXT = 0x8307F100;
+	
+	// NTR Mode/Splash used by default
+	bool UseNTRSplash = true;
+	bool EnableSD = false;
 
 	swiWaitForVBlank();
 
@@ -53,11 +57,27 @@ int main(int argc, const char* argv[]) {
 	scanKeys();
 	int pressed = keysDown();
 
-	// Boot Splash plays unless user holds B on boot. NTR Clock speeds always used here.
-	if ( pressed & KEY_B ) { REG_SCFG_CLK = 0x80; } else { BootSplashInit(); }
+	if (fatInitDefault()) {
+		CIniFile ntrlauncher_config( "sd:/nds/ntr_launcher.ini" );
+		
+		if(ntrlauncher_config.GetInt("NTRLAUNCHER","NTRCLOCK",0) == 0) { UseNTRSplash = false; }
 
-	// Boot Splash will play regardless if user tried to skip it if booted with no cartridge.
-	if(REG_SCFG_MC == 0x11) { BootSplashInit(); }	
+		if(ntrlauncher_config.GetInt("NTRLAUNCHER","DISABLEANIMATION",0) == 1) {
+			if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); } else { if( UseNTRSplash == true ) { REG_SCFG_CLK = 0x80; } }
+		} else {
+			if( pressed & KEY_B ) { if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); } } else { BootSplashInit(UseNTRSplash); }
+		}
+
+		if(ntrlauncher_config.GetInt("NTRLAUNCHER","ENABLESD",0) == 1) {
+			EnableSD = true;
+			// Tell Arm7 to use alternate SCFG_EXT values.
+			fifoSendValue32(FIFO_USER_05, 1);
+		}
+
+	} else {
+		if ( pressed & KEY_B ) { if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); } } else { BootSplashInit(UseNTRSplash); }
+	}
+
 	// Tell Arm7 it's ready for card reset (if card reset is nessecery)
 	fifoSendValue32(FIFO_USER_01, 1);
 	// Waits for Arm7 to finish card reset (if nessecery)
@@ -79,7 +99,7 @@ int main(int argc, const char* argv[]) {
 	while(1) {
 		if(REG_SCFG_MC == 0x11) { 
 		break; } else {
-			runLaunchEngine ();
+			runLaunchEngine (EnableSD);
 		}
 	}
 	return 0;
