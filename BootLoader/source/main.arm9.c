@@ -238,8 +238,8 @@ void arm9_main (void) {
 	
 	// arm9_errorOutput (*(u32*)(first), true);
 
-	void (*foo)() = *(u32*)(0x27FFE24);
+	void (*newReset)() = *(u32*)(0x27FFE24);
 
-	foo();
+	newReset();
 }
 
