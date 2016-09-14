@@ -57,10 +57,12 @@ void runLaunchEngine (bool EnableSD)
 	}
 
 	// Reset into a passme loop
-	REG_EXMEMCNT = 0xffff;
+	// REG_EXMEMCNT = 0xffff;
+	REG_EXMEMCNT |= ARM7_OWNS_ROM | ARM7_OWNS_CARD;
 	*((vu32*)0x027FFFFC) = 0;
 	*((vu32*)0x027FFE04) = (u32)0xE59FF018;
 	*((vu32*)0x027FFE24) = (u32)0x027FFE04;
+
 	swiSoftReset(); 
 }
 

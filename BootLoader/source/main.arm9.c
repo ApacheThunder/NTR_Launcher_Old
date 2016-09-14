@@ -1,4 +1,4 @@
- /*
+/*
  main.arm9.c
  
  By Michael Chisholm (Chishm)
@@ -233,7 +233,12 @@ void arm9_main (void) {
 	// wait for vblank then boot
 	while(REG_VCOUNT!=191);
 	while(REG_VCOUNT==191);
-	// Test code to reset SCFG back to NTR values and restoring bit31
-	resetCpu();
+	
+	u32 first = *(u32*)(0x27FFE34);
+		
+	void (*newReset)() = *(u32*)(0x27FFE24);
+
+	newReset();
+	// resetCpu();
 }
 
