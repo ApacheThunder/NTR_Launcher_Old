@@ -11,7 +11,7 @@ export TARGET		:=	NTR_Launcher
 export TOPDIR		:=	$(CURDIR)
 
 export VERSION_MAJOR	:= 1
-export VERSION_MINOR	:= 8_alt
+export VERSION_MINOR	:= 91_alt
 export VERSTRING	:=	$(VERSION_MAJOR).$(VERSION_MINOR)
 
 #---------------------------------------------------------------------------------
