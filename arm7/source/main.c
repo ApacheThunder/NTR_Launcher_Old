@@ -77,7 +77,9 @@ int main(void) {
 	// Make sure Arm9 had a chance to check slot status
 	fifoWaitValue32(FIFO_USER_01);
 	// If Arm9 reported slot is powered off, have Arm7 wait for Arm9 to be ready before card reset. This makes sure arm7 doesn't try card reset too early.
-	if(fifoCheckValue32(FIFO_USER_02)) { PowerOnSlot(); }
+	if(fifoCheckValue32(FIFO_USER_02)) { 
+		if(fifoCheckValue32(FIFO_USER_07)) { dsi_resetSlot1(); } else { PowerOnSlot(); }
+	}
 	fifoSendValue32(FIFO_USER_03, 1);
 	
 	while (1) {

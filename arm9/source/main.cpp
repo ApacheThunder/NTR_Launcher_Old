@@ -80,6 +80,12 @@ int main(int argc, const char* argv[]) {
 			// Tell Arm7 not to switch into NTR mode (this will only work on alt build of NTR Launcher)
 			fifoSendValue32(FIFO_USER_06, 1);
 		}
+
+		if(ntrlauncher_config.GetInt("NTRLAUNCHER_ALT","RESETSLOT1",0) == 1) {
+			fifoSendValue32(FIFO_USER_02, 1);
+			fifoSendValue32(FIFO_USER_07, 1);
+		}
+
 	} else {
 		if ( pressed & KEY_B ) { if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); } } else { BootSplashInit(UseNTRSplash); }
 	}
