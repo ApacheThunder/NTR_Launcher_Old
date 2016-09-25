@@ -32,16 +32,13 @@
 #include "crc.h"
 #include "version.h" 
 
-// volatile u32* REG_SCFG_ROM = (volatile u32*)0x4004000;
-// volatile u32* REG_SCFG_CLK = (volatile u32*)0x4004004;
-// volatile u32* REG_SCFG_EXT = (volatile u32*)0x4004008;
-// volatile u32* REG_SCFG_MC = (volatile u32*)0x4004010;
-
 int main(int argc, const char* argv[]) {
 	
 	// NTR Mode/Splash used by default
 	bool UseNTRSplash = true;
 	bool EnableSD = false;
+
+	REG_SCFG_CLK = 0x85;
 
 	swiWaitForVBlank();
 
@@ -62,22 +59,28 @@ int main(int argc, const char* argv[]) {
 		CIniFile ntrlauncher_config( "sd:/nds/ntr_launcher.ini" );
 		
 		if(ntrlauncher_config.GetInt("NTRLAUNCHER","NTRCLOCK",0) == 0) { UseNTRSplash = false; }
-		
-		if(ntrlauncher_config.GetInt("NTRLAUNCHER","RESETSLOT1",0) == 1) {
-			fifoSendValue32(FIFO_USER_02, 1);
-			fifoSendValue32(FIFO_USER_06, 1);
-		}
 
-		if(ntrlauncher_config.GetInt("NTRLAUNCHER","DISABLEANIMATION",0) == 1) {
-			if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); } else { if( UseNTRSplash == true ) { REG_SCFG_CLK = 0x80; } }
-		} else {
+		if(ntrlauncher_config.GetInt("NTRLAUNCHER","DISABLEANIMATION",0) == 0) {
 			if( pressed & KEY_B ) { if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); } } else { BootSplashInit(UseNTRSplash); }
+		} else {
+			if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); }
 		}
 
 		if(ntrlauncher_config.GetInt("NTRLAUNCHER","ENABLESD",0) == 1) {
 			EnableSD = true;
 			// Tell Arm7 to use alternate SCFG_EXT values.
 			fifoSendValue32(FIFO_USER_05, 1);
+		}
+
+		if( UseNTRSplash == true ) {
+			fifoSendValue32(FIFO_USER_04, 1);
+			REG_SCFG_CLK = 0x80;
+			swiWaitForVBlank();
+		}
+
+		if(ntrlauncher_config.GetInt("NTRLAUNCHER","RESETSLOT1",0) == 1) {
+			fifoSendValue32(FIFO_USER_02, 1);
+			fifoSendValue32(FIFO_USER_06, 1);
 		}
 
 	} else {
