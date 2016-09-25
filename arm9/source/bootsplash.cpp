@@ -454,8 +454,6 @@ void BootSplashDS(bool SetNTRSplash) {
 		
 		if( SetNTRSplash ) {
 		
-		fifoSendValue32(FIFO_USER_04, 1);
-		
 		swiDecompressLZSSVram ((void*)Top18Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 		vramcpy_ui (&BG_PALETTE[0], Top18Pal, Top18PalLen);
 
@@ -577,9 +575,6 @@ void BootSplashDS(bool SetNTRSplash) {
 		
 		if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 
-		// Set NTR mode clock speeds. DSi Mode Splash will leave this untouched.
-		REG_SCFG_CLK = 0x80;
-		
 		swiWaitForVBlank();
 
 		} else { BootSplashDSi(); }
@@ -590,11 +585,6 @@ void BootSplashInit(bool UseNTRSplash) {
 	bool SetNTRSplash = false;
 	
 	if( UseNTRSplash ) { SetNTRSplash = true; }
-
-	// Set TWL Clock speeds. NTR Clock speeds set at end of BootSplashDS if user chooses not to trigger BootSplashDSi at frame 18.
-	REG_SCFG_CLK = 0x85;
-	
-	swiWaitForVBlank();
 
 	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE);
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);

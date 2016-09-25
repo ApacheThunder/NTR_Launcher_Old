@@ -33,6 +33,7 @@
 #include "version.h" 
 
 // volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
+// volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
 // volatile u32* SCFG_MC = (volatile u32*)0x4004010;
 // volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
 
@@ -43,6 +44,8 @@ int main(int argc, const char* argv[]) {
 	// NTR Mode/Splash used by default
 	bool UseNTRSplash = true;
 	bool EnableSD = false;
+
+	REG_SCFG_CLK = 0x85;
 
 	swiWaitForVBlank();
 
@@ -64,10 +67,16 @@ int main(int argc, const char* argv[]) {
 		
 		if(ntrlauncher_config.GetInt("NTRLAUNCHER_ALT","NTRCLOCK",0) == 0) { UseNTRSplash = false; }
 
-		if(ntrlauncher_config.GetInt("NTRLAUNCHER_ALT","DISABLEANIMATION",0) == 1) {
-			if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); } else { if( UseNTRSplash == true ) { REG_SCFG_CLK = 0x80; } }
-		} else {
+		if(ntrlauncher_config.GetInt("NTRLAUNCHER_ALT","DISABLEANIMATION",0) == 0) {
 			if( pressed & KEY_B ) { if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); } } else { BootSplashInit(UseNTRSplash); }
+		} else {
+			if(REG_SCFG_MC == 0x11) { BootSplashInit(UseNTRSplash); }
+		}
+
+		if( UseNTRSplash == true ) {
+			fifoSendValue32(FIFO_USER_04, 1);
+			REG_SCFG_CLK = 0x80;
+			swiWaitForVBlank();
 		}
 
 		if(ntrlauncher_config.GetInt("NTRLAUNCHER_ALT","ENABLESD",0) == 1) {
