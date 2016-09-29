@@ -29,6 +29,11 @@
 #include "CartPrompt03.h"
 #include "CartPrompt04.h"
 
+#include "DSiCartPrompt01.h"
+#include "DSiCartPrompt02.h"
+#include "DSiCartPrompt03.h"
+#include "DSiCartPrompt04.h"
+
 #include "Bot00.h"
 #include "Bot01.h"
 #include "Bot02.h"
@@ -40,6 +45,19 @@
 #include "Bot08.h"
 #include "Bot09.h"
 #include "Bot10.h"
+
+#include "BotDSi00.h"
+#include "BotDSi01.h"
+#include "BotDSi02.h"
+#include "BotDSi03.h"
+#include "BotDSi04.h"
+#include "BotDSi05.h"
+#include "BotDSi06.h"
+#include "BotDSi07.h"
+#include "BotDSi08.h"
+#include "BotDSi09.h"
+#include "BotDSi10.h"
+#include "BotDSi11.h"
 
 #include "Top00.h"
 #include "Top01.h"
@@ -80,6 +98,23 @@
 #include "Top36.h"
 #include "Top37.h"
 
+#include "DSi01.h"
+#include "DSi02.h"
+#include "DSi03.h"
+#include "DSi04.h"
+#include "DSi05.h"
+#include "DSi06.h"
+#include "DSi07.h"
+#include "DSi08.h"
+#include "DSi09.h"
+#include "DSi10.h"
+#include "DSi11.h"
+#include "DSi12.h"
+#include "DSi13.h"
+#include "DSi14.h"
+#include "DSi15.h"
+#include "DSi16.h"
+#include "DSi17.h"
 #include "DSi18.h"
 #include "DSi19.h"
 #include "DSi20.h"
@@ -98,7 +133,6 @@
 #include "DSi33.h"
 #include "DSi34.h"
 #include "DSi35.h"
-#include "DSi36.h"
 
 #include "errorsplash.h"
 
@@ -199,8 +233,175 @@ void CartridgePrompt() {
 
 }
 
+void CartridgePromptDSi() {
+	
+	swiDecompressLZSSVram ((void*)BotDSi05Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi05Pal, Bot05PalLen);
+
+	for (int i = 0; i < 20; i++) { swiWaitForVBlank(); }
+	
+	swiDecompressLZSSVram ((void*)DSiCartPrompt04Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE_SUB[0], DSiCartPrompt04Pal, DSiCartPrompt04PalLen);
+
+	for (int i = 0; i < 4; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSiCartPrompt03Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE_SUB[0], DSiCartPrompt03Pal, DSiCartPrompt03PalLen);
+
+	for (int i = 0; i < 4; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSiCartPrompt02Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE_SUB[0], DSiCartPrompt02Pal, DSiCartPrompt02PalLen);	
+
+	for (int i = 0; i < 4; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSiCartPrompt01Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE_SUB[0], DSiCartPrompt01Pal, DSiCartPrompt01PalLen);	
+
+	for (int i = 0; i < 40; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSiCartPrompt02Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE_SUB[0], DSiCartPrompt02Pal, DSiCartPrompt02PalLen);	
+
+	for (int i = 0; i < 4; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSiCartPrompt03Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE_SUB[0], DSiCartPrompt03Pal, DSiCartPrompt03PalLen);
+
+	for (int i = 0; i < 4; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSiCartPrompt04Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE_SUB[0], DSiCartPrompt04Pal, DSiCartPrompt04PalLen);
+
+	for (int i = 0; i < 4; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)BotDSi05Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi05Pal, BotDSi05PalLen);
+
+	for (int i = 0; i < 20; i++) { swiWaitForVBlank(); }
+
+}
+
 void BootSplashDSi() {
 
+	swiDecompressLZSSVram ((void*)DSi01Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi01Pal, DSi01PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi00Pal, BotDSi00PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi01Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi02Pal, DSi02PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi01Pal, BotDSi01PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi01Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi02Pal, DSi02PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi01Pal, BotDSi01PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	
+	swiDecompressLZSSVram ((void*)DSi01Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi01Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi02Pal, DSi02PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi02Pal, BotDSi02PalLen);
+	
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	
+	swiDecompressLZSSVram ((void*)DSi02Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi02Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi03Pal, DSi03PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi03Pal, BotDSi03PalLen);
+	
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi03Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi03Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi03Pal, DSi03PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi03Pal, BotDSi03PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi04Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi04Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi04Pal, DSi04PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi04Pal, BotDSi04PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi05Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi05Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi05Pal, DSi05PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi05Pal, BotDSi05PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	
+	swiDecompressLZSSVram ((void*)DSi06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi06Pal, DSi06PalLen);
+	
+	BootJingleDSi();
+	
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi07Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi07Pal, DSi07PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi08Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi08Pal, DSi08PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	
+	swiDecompressLZSSVram ((void*)DSi09Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi09Pal, DSi09PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi10Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi10Pal, DSi10PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi11Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi11Pal, DSi11PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi12Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi12Pal, DSi12PalLen);
+	
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi13Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi13Pal, DSi13PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi14Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi14Pal, DSi14PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi15Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi15Pal, DSi15PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi16Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi16Pal, DSi16PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi17Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi17Pal, DSi17PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	
 	swiDecompressLZSSVram ((void*)DSi18Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy_ui (&BG_PALETTE[0], DSi18Pal, DSi18PalLen);
 
@@ -254,74 +455,71 @@ void BootSplashDSi() {
 	swiDecompressLZSSVram ((void*)DSi28Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy_ui (&BG_PALETTE[0], DSi28Pal, DSi28PalLen);
 
-	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-	swiDecompressLZSSVram ((void*)DSi29Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	vramcpy_ui (&BG_PALETTE[0], DSi29Pal, DSi29PalLen);
-
-	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-	swiDecompressLZSSVram ((void*)DSi30Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	vramcpy_ui (&BG_PALETTE[0], DSi30Pal, DSi30PalLen);
-
-	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-	swiDecompressLZSSVram ((void*)DSi31Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	vramcpy_ui (&BG_PALETTE[0], DSi31Pal, DSi31PalLen);
-
 	// Display Cartridge Prompt animation until cartridge inserted. (skipped if one already inserted)
 	if(REG_SCFG_MC == 0x11) { 
-		do { CartridgePrompt(); } 
+		do { CartridgePromptDSi(); } 
 		while (REG_SCFG_MC == 0x11);
 	}
 
 	// Pause on frame 31 for a second		
 	for (int i = 0; i < 80; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi29Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi06Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi29Pal, DSi29PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi06Pal, BotDSi06PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi30Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi07Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi30Pal, DSi30PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi07Pal, BotDSi07PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)DSi31Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi08Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi31Pal, DSi31PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi08Pal, BotDSi08PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
 	swiDecompressLZSSVram ((void*)DSi32Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)Bot06Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi09Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy_ui (&BG_PALETTE[0], DSi32Pal, DSi32PalLen);
-	vramcpy_ui (&BG_PALETTE_SUB[0], Bot06Pal, Bot06PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi09Pal, BotDSi09PalLen);
 
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
 	swiDecompressLZSSVram ((void*)DSi33Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)Bot07Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi10Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy_ui (&BG_PALETTE[0], DSi33Pal, DSi33PalLen);
-	vramcpy_ui (&BG_PALETTE_SUB[0], Bot07Pal, Bot07PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi10Pal, BotDSi10PalLen);
 
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }	
 
 	swiDecompressLZSSVram ((void*)DSi34Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)Bot08Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi11Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy_ui (&BG_PALETTE[0], DSi34Pal, DSi34PalLen);
-	vramcpy_ui (&BG_PALETTE_SUB[0], Bot08Pal, Bot08PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi11Pal, BotDSi11PalLen);
 
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
 	swiDecompressLZSSVram ((void*)DSi35Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)Bot09Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)BotDSi00Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
 	vramcpy_ui (&BG_PALETTE[0], DSi35Pal, DSi35PalLen);
-	vramcpy_ui (&BG_PALETTE_SUB[0], Bot09Pal, Bot09PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], BotDSi00Pal, BotDSi00PalLen);
 
-	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }	
 
-	swiDecompressLZSSVram ((void*)DSi36Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	swiDecompressLZSSVram ((void*)Bot10Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-	vramcpy_ui (&BG_PALETTE[0], DSi36Pal, DSi36PalLen);
-	vramcpy_ui (&BG_PALETTE_SUB[0], Bot10Pal, Bot10PalLen);
-
-	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-	swiDecompressLZSSVram ((void*)Top37Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-	vramcpy_ui (&BG_PALETTE[0], Top37Pal, Top37PalLen);
+	swiDecompressLZSSVram ((void*)DSi01Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], DSi01Pal, DSi01PalLen);
 
 	if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
 }
 
-void BootSplashDS(bool SetNTRSplash) {
-
-	int pressed = keysDown();
+void BootSplashDS() {
 
 	// offsetting palletes by one frame during the fade in seems to fix black flicker at start.	
 	// only did this for about 5 frames. (time it takes for bottom screen to fade in)
@@ -381,14 +579,7 @@ void BootSplashDS(bool SetNTRSplash) {
 
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
-	// Once frame 8 is reached boot jingle sound effect plays
-	// if (REG_SCFG_ROM == 0x03 or REG_SCFG_ROM == 0x00) { BootJingle(); } else { BootJingleDSi(); }
-	
-	if ( pressed & KEY_A ) {
-		BootJingleDSi(); 
-	} else {
-		if( SetNTRSplash ) { BootJingle(); } else { BootJingleDSi(); }
-	}
+	BootJingle();
 	
 	swiDecompressLZSSVram ((void*)Top06Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
 	vramcpy_ui (&BG_PALETTE[0], Top06Pal, Top06PalLen);
@@ -449,143 +640,134 @@ void BootSplashDS(bool SetNTRSplash) {
 	vramcpy_ui (&BG_PALETTE[0], Top17Pal, Top17PalLen);
 
 	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-	if ( pressed & KEY_A ) { BootSplashDSi(); } else {
-		
-		if( SetNTRSplash ) {
-		
-		swiDecompressLZSSVram ((void*)Top18Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top18Pal, Top18PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top19Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top19Pal, Top19PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top20Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top20Pal, Top20PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top21Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top21Pal, Top21PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top22Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top22Pal, Top22PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top23Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top23Pal, Top23PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top24Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top24Pal, Top24PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top25Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top25Pal, Top25PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top26Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top26Pal, Top26PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top27Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top27Pal, Top27PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top28Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top28Pal, Top28PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top29Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top29Pal, Top29PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top30Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top30Pal, Top30PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top31Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top31Pal, Top31PalLen);
-
-		// Display Cartridge Prompt animation until cartridge inserted. (skipped if one already inserted)
-		if(REG_SCFG_MC == 0x11) { 
-			do { CartridgePrompt(); } 
-			while (REG_SCFG_MC == 0x11);
-		}
-
-		// Pause on frame 31 for a second		
-		for (int i = 0; i < 80; i++) { swiWaitForVBlank(); }
-
-		swiDecompressLZSSVram ((void*)Top32Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		swiDecompressLZSSVram ((void*)Bot06Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top32Pal, Top32PalLen);
-		vramcpy_ui (&BG_PALETTE_SUB[0], Bot06Pal, Bot06PalLen);
-
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 	
-		swiDecompressLZSSVram ((void*)Top33Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		swiDecompressLZSSVram ((void*)Bot07Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top33Pal, Top33PalLen);
-		vramcpy_ui (&BG_PALETTE_SUB[0], Bot07Pal, Bot07PalLen);
+	swiDecompressLZSSVram ((void*)Top18Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top18Pal, Top18PalLen);
 
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }	
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
-		swiDecompressLZSSVram ((void*)Top34Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		swiDecompressLZSSVram ((void*)Bot08Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top34Pal, Top34PalLen);
-		vramcpy_ui (&BG_PALETTE_SUB[0], Bot08Pal, Bot08PalLen);
+	swiDecompressLZSSVram ((void*)Top19Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top19Pal, Top19PalLen);
 
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
-		swiDecompressLZSSVram ((void*)Top35Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		swiDecompressLZSSVram ((void*)Bot09Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top35Pal, Top35PalLen);
-		vramcpy_ui (&BG_PALETTE_SUB[0], Bot09Pal, Bot09PalLen);
+	swiDecompressLZSSVram ((void*)Top20Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top20Pal, Top20PalLen);
 
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
-		swiDecompressLZSSVram ((void*)Top36Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		swiDecompressLZSSVram ((void*)Bot10Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top36Pal, Top36PalLen);
-		vramcpy_ui (&BG_PALETTE_SUB[0], Bot10Pal, Bot10PalLen);
+	swiDecompressLZSSVram ((void*)Top21Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top21Pal, Top21PalLen);
 
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
-		swiDecompressLZSSVram ((void*)Top37Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
-		vramcpy_ui (&BG_PALETTE[0], Top37Pal, Top37PalLen);
+	swiDecompressLZSSVram ((void*)Top22Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top22Pal, Top22PalLen);
 
-		for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
-		
-		swiWaitForVBlank();
-		
-		if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
 
-		swiWaitForVBlank();
+	swiDecompressLZSSVram ((void*)Top23Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top23Pal, Top23PalLen);
 
-		} else { BootSplashDSi(); }
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top24Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top24Pal, Top24PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top25Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top25Pal, Top25PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top26Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top26Pal, Top26PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top27Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top27Pal, Top27PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top28Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top28Pal, Top28PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top29Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top29Pal, Top29PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top30Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top30Pal, Top30PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top31Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top31Pal, Top31PalLen);
+
+	// Display Cartridge Prompt animation until cartridge inserted. (skipped if one already inserted)
+	if(REG_SCFG_MC == 0x11) { 
+		do { CartridgePrompt(); } 
+		while (REG_SCFG_MC == 0x11);
 	}
+
+	// Pause on frame 31 for a second		
+	for (int i = 0; i < 80; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top32Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)Bot06Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top32Pal, Top32PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], Bot06Pal, Bot06PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+	
+	swiDecompressLZSSVram ((void*)Top33Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)Bot07Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top33Pal, Top33PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], Bot07Pal, Bot07PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }	
+
+	swiDecompressLZSSVram ((void*)Top34Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)Bot08Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top34Pal, Top34PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], Bot08Pal, Bot08PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top35Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)Bot09Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top35Pal, Top35PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], Bot09Pal, Bot09PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top36Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	swiDecompressLZSSVram ((void*)Bot10Tiles, (void*)CHAR_BASE_BLOCK_SUB(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top36Pal, Top36PalLen);
+	vramcpy_ui (&BG_PALETTE_SUB[0], Bot10Pal, Bot10PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+
+	swiDecompressLZSSVram ((void*)Top37Tiles, (void*)CHAR_BASE_BLOCK(2), 0, &decompressBiosCallback);
+	vramcpy_ui (&BG_PALETTE[0], Top37Pal, Top37PalLen);
+
+	for (int i = 0; i < 2; i++) { swiWaitForVBlank(); }
+		
+	swiWaitForVBlank();
+		
+	if(REG_SCFG_MC == 0x11) { ErrorNoCard(); }
+
+	swiWaitForVBlank();
+
 }
+
 void BootSplashInit(bool UseNTRSplash) {
 	
-	bool SetNTRSplash = false;
-	
-	if( UseNTRSplash ) { SetNTRSplash = true; }
-
 	videoSetMode(MODE_0_2D | DISPLAY_BG0_ACTIVE);
 	videoSetModeSub(MODE_0_2D | DISPLAY_BG0_ACTIVE);
 	vramSetBankA (VRAM_A_MAIN_BG_0x06000000);
@@ -601,7 +783,16 @@ void BootSplashInit(bool UseNTRSplash) {
 		bgMapSub[i] = (u16)i;
 	}
 	
-	BootSplashDS(SetNTRSplash);
+	int pressed = keysDown();
 
+	if ( pressed & KEY_A ) {
+		BootSplashDSi();
+	} else {
+		if( UseNTRSplash ) {
+			BootSplashDS();
+		} else {
+			BootSplashDSi();
+		}
+	}
 }
 

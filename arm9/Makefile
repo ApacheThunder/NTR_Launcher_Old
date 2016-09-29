@@ -141,6 +141,19 @@ CartPrompt03.s			:	../$(IMAGES)/CartPrompt03.bmp
 CartPrompt04.s			:	../$(IMAGES)/CartPrompt04.bmp
 	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
 
+#DSi Cartridge Wait Prompt (bottom screen)
+DSiCartPrompt01.s			:	../$(IMAGES)/DSiCartPrompt01.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSiCartPrompt02.s			:	../$(IMAGES)/DSiCartPrompt02.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSiCartPrompt03.s			:	../$(IMAGES)/DSiCartPrompt03.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSiCartPrompt04.s			:	../$(IMAGES)/DSiCartPrompt04.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
 # generic fade from white to black
 
 fade00.s			:	../$(IMAGES)/fade00.bmp
@@ -178,28 +191,6 @@ suberror05.s			:	../$(IMAGES)/suberror05.bmp
 	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
 
 suberror06.s			:	../$(IMAGES)/suberror06.bmp
-	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
-
-# No bit31 patch error
-toperror1_00.s			:	../$(IMAGES)/toperror1_00.bmp
-	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
-
-toperror1_01.s			:	../$(IMAGES)/toperror1_01.bmp
-	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
-
-toperror1_02.s			:	../$(IMAGES)/toperror1_02.bmp
-	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
-
-toperror1_03.s			:	../$(IMAGES)/toperror1_03.bmp
-	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
-
-toperror1_04.s			:	../$(IMAGES)/toperror1_04.bmp
-	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
-
-toperror1_05.s			:	../$(IMAGES)/toperror1_05.bmp
-	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
-
-toperror1_06.s			:	../$(IMAGES)/toperror1_06.bmp
 	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
 
 # No Cartridge Error
@@ -373,6 +364,57 @@ Top37.s			:	../$(IMAGES)/Top37.bmp
 	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
 
 # DSi BootSplash. Used if TWL mode detected
+DSi01.s			:	../$(IMAGES)/DSi01.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi02.s			:	../$(IMAGES)/DSi02.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi03.s			:	../$(IMAGES)/DSi03.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi04.s			:	../$(IMAGES)/DSi04.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi05.s			:	../$(IMAGES)/DSi05.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi06.s			:	../$(IMAGES)/DSi06.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi07.s			:	../$(IMAGES)/DSi07.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi08.s			:	../$(IMAGES)/DSi08.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi09.s			:	../$(IMAGES)/DSi09.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi10.s			:	../$(IMAGES)/DSi10.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi11.s			:	../$(IMAGES)/DSi11.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi12.s			:	../$(IMAGES)/DSi12.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi13.s			:	../$(IMAGES)/DSi13.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi14.s			:	../$(IMAGES)/DSi14.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi15.s			:	../$(IMAGES)/DSi15.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi16.s			:	../$(IMAGES)/DSi16.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+DSi17.s			:	../$(IMAGES)/DSi17.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
 DSi18.s			:	../$(IMAGES)/DSi18.bmp
 	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
 
@@ -427,7 +469,41 @@ DSi34.s			:	../$(IMAGES)/DSi34.bmp
 DSi35.s			:	../$(IMAGES)/DSi35.bmp
 	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
 
-DSi36.s			:	../$(IMAGES)/DSi36.bmp
+#DSi version of bottom screen
+BotDSi00.s			:	../$(IMAGES)/BotDSi00.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi01.s			:	../$(IMAGES)/BotDSi01.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi02.s			:	../$(IMAGES)/BotDSi02.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi03.s			:	../$(IMAGES)/BotDSi03.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi04.s			:	../$(IMAGES)/BotDSi04.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi05.s			:	../$(IMAGES)/BotDSi05.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi06.s			:	../$(IMAGES)/BotDSi06.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi07.s			:	../$(IMAGES)/BotDSi07.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi08.s			:	../$(IMAGES)/BotDSi08.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi09.s			:	../$(IMAGES)/BotDSi09.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi10.s			:	../$(IMAGES)/BotDSi10.bmp
+	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
+
+BotDSi11.s			:	../$(IMAGES)/BotDSi11.bmp
 	grit	$< -gB8 -gzl -fts -gTff00ff -o $@ -q
 
 #---------------------------------------------------------------------------------
