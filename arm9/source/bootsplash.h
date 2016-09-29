@@ -28,7 +28,8 @@ void BootJingle (void);
 void BootJingleDSi (void);
 void BootSplashDSi (void);
 void CartridgePrompt (void);
-void BootSplashDS (bool SetNTRSplash);
+void CartridgePromptDSi (void);
+void BootSplashDS (void);
 void BootSplashInit (bool UseNTRSplash);
 
 #ifdef __cplusplus
