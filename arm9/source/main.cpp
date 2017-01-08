@@ -108,7 +108,7 @@ int main(int argc, const char* argv[]) {
 	while(1) {
 		if(REG_SCFG_MC == 0x11) { 
 		break; } else {
-			runLaunchEngine (EnableSD);
+			runLaunchEngine (UseNTRSplash, EnableSD);
 		}
 	}
 	return 0;

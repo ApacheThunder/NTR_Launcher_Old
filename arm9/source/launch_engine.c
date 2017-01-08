@@ -34,7 +34,7 @@ void vramcpy (void* dst, const void* src, int len)
 }	
 
 // Basic engine with no cheat related code.
-void runLaunchEngine (bool EnableSD)
+void runLaunchEngine (bool UseNTRSplash, bool EnableSD)
 {
 	irqDisable(IRQ_ALL);
 
@@ -50,11 +50,20 @@ void runLaunchEngine (bool EnableSD)
 	// Give the VRAM to the ARM7
 	VRAM_C_CR = VRAM_ENABLE | VRAM_C_ARM7_0x06000000;
 
-	if( EnableSD ) {
-		REG_SCFG_EXT=0x83000000;
+	if( UseNTRSplash ) {
+		if( EnableSD ) {
+			REG_SCFG_EXT=0x83000000;
+		} else {
+			REG_SCFG_EXT=0x03000000;
+		}
 	} else {
-		REG_SCFG_EXT=0x03000000;
+		if( EnableSD ) {
+			REG_SCFG_EXT=0x83002000;
+		} else {
+			REG_SCFG_EXT=0x03002000;
+		}
 	}
+	
 
 	// Reset into a passme loop
 	// REG_EXMEMCNT = 0xffff;
@@ -63,6 +72,6 @@ void runLaunchEngine (bool EnableSD)
 	*((vu32*)0x027FFE04) = (u32)0xE59FF018;
 	*((vu32*)0x027FFE24) = (u32)0x027FFE04;
 
-	swiSoftReset(); 
+	swiSoftReset();
 }
 
