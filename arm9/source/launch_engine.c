@@ -34,7 +34,7 @@ void vramcpy (void* dst, const void* src, int len)
 }	
 
 // Basic engine with no cheat related code.
-void runLaunchEngine (bool EnableSD)
+void runLaunchEngine (bool UseNTRSplash, bool EnableSD)
 {
 
 	irqDisable(IRQ_ALL);
@@ -53,10 +53,18 @@ void runLaunchEngine (bool EnableSD)
 
 	// volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
 	
-	if( EnableSD ) {
-		REG_SCFG_EXT=0x83000000;
+	if( UseNTRSplash ) {
+		if( EnableSD ) {
+			REG_SCFG_EXT=0x83000000;
+		} else {
+			REG_SCFG_EXT=0x03000000;
+		}
 	} else {
-		REG_SCFG_EXT=0x03000000;
+		if( EnableSD ) {
+			REG_SCFG_EXT=0x83002000;
+		} else {
+			REG_SCFG_EXT=0x03002000;
+		}
 	}
 	
 	// REG_SCFG_EXT=0x03000000;
