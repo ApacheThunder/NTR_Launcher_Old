@@ -28,7 +28,7 @@ all: $(TARGET).nds
 
 $(TARGET).nds	:	$(TARGET).arm7 $(TARGET).arm9
 	ndstool	-c $(TARGET).nds -7 arm7/$(TARGET).arm7.elf -9 arm9/$(TARGET).arm9.elf \
-			-b $(CURDIR)/icon.bmp "NTR Launcher;NitroHax provided by Chishm;Modification of NitroHax by Apache Thunder"
+			-b $(CURDIR)/icon.bmp "NTR Launcher;NitroHax provided by Chishm;Modified by Apache Thunder"
 
 #---------------------------------------------------------------------------------
 $(TARGET).arm7	: arm7/$(TARGET).elf
