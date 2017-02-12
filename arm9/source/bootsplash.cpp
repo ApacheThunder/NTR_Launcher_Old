@@ -141,6 +141,8 @@
 #define CONSOLE_SCREEN_WIDTH 32
 #define CONSOLE_SCREEN_HEIGHT 24
 
+#define REG_SCFG_MC		(*(vu32*)0x4004010)
+
 void vramcpy_ui (void* dest, const void* src, int size) 
 {
 	u16* destination = (u16*)dest;

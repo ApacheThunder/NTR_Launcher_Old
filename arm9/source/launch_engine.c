@@ -21,7 +21,10 @@
 
 #include "load_bin.h"
 #include "launch_engine.h"
+
 #define LCDC_BANK_C (u16*)0x06840000
+
+#define REG_SCFG_EXT	(*(vu32*)0x4004008)
 
 void vramcpy (void* dst, const void* src, int len)
 {

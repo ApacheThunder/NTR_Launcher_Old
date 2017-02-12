@@ -18,8 +18,15 @@
 
 #include <nds.h>
 
+// #define REG_ROMCTRL		(*(vu32*)0x40001A4)
+#define REG_SCFG_ROM	(*(vu32*)0x4004000)
+#define REG_SCFG_CLK	(*(vu32*)0x4004004)
+#define REG_SCFG_EXT	(*(vu32*)0x4004008)
+// #define REG_SCFG_MC		(*(vu32*)0x4004010)
+
 void runLaunchEngineCheck (void)
 {
+
 	if(*((vu32*)0x027FFE24) == (u32)0x027FFE04)
 	{
 		if(fifoCheckValue32(FIFO_USER_04)) {

@@ -32,12 +32,19 @@
 #include "crc.h"
 #include "version.h" 
 
-// volatile u32* SCFG_EXT = (volatile u32*)0x4004008;
-// volatile u32* SCFG_CLK = (volatile u32*)0x4004004;
-// volatile u32* SCFG_MC = (volatile u32*)0x4004010;
-// volatile u32* SCFG_ROM = (volatile u32*)0x4004000;
+// #define REG_ROMCTRL		(*(vu32*)0x40001A4)
+// #define REG_SCFG_ROM	(*(vu32*)0x4004000)
+#define REG_SCFG_CLK	(*(vu32*)0x4004004)
+#define REG_SCFG_EXT	(*(vu32*)0x4004008)
+#define REG_SCFG_MC		(*(vu32*)0x4004010)
+
 
 int main(int argc, const char* argv[]) {
+
+	// volatile u32* REG_SCFG_EXT = (volatile u32*)0x4004008;
+	// volatile u32* REG_SCFG_CLK = (volatile u32*)0x4004004;
+	// volatile u32* REG_SCFG_MC = (volatile u32*)0x4004010;
+	// volatile u32* REG_SCFG_ROM = (volatile u32*)0x4004000;
 
 	// REG_SCFG_EXT = 0x8307F100;
 	
@@ -53,7 +60,8 @@ int main(int argc, const char* argv[]) {
 	if(REG_SCFG_MC == 0x11) { fifoSendValue32(FIFO_USER_02, 1); }
 	if(REG_SCFG_MC == 0x10) { fifoSendValue32(FIFO_USER_02, 1); }
 
-	dsi_forceTouchDsmode();
+	// Will wait till implemented in official libnds
+	// dsi_forceTouchDsmode();
 
 	u32 ndsHeader[0x80];
 	char gameid[4];

@@ -24,6 +24,12 @@
 
 #include "launch_engine_arm7.h"
 
+#define REG_ROMCTRL		(*(vu32*)0x40001A4)
+#define REG_SCFG_ROM	(*(vu32*)0x4004000)
+#define REG_SCFG_CLK	(*(vu32*)0x4004004)
+#define REG_SCFG_EXT	(*(vu32*)0x4004008)
+#define REG_SCFG_MC		(*(vu32*)0x4004010)
+
 void VcountHandler() {
 	inputGetAndSend();
 }
@@ -32,7 +38,6 @@ void VblankHandler(void) {
 }
 
 void PowerOnSlot() {
-
 	// Power On Slot
 	while(REG_SCFG_MC&0x0C !=  0x0C); // wait until state<>3
 	if(REG_SCFG_MC&0x0C != 0x00) return; //  exit if state<>0
@@ -47,6 +52,20 @@ void PowerOnSlot() {
 	
 	while(REG_ROMCTRL&0x8000000 != 0x8000000);
 	
+}
+
+void PowerOffSlot() {
+	while(REG_SCFG_MC&0x0C !=  0x0C); // wait until state<>3
+	if(REG_SCFG_MC&0x0C != 0x08) return 1; // exit if state<>2      
+	
+	REG_SCFG_MC = 0x0C; // set state=3 
+	while(REG_SCFG_MC&0x0C != 0x00); // wait until state=0
+}
+
+void TWL_ResetSlot1() {
+	PowerOffSlot();
+	for (int i = 0; i < 30; i++) { swiWaitForVBlank(); }
+	PowerOnSlot(); 
 }
 
 int main(void) {
@@ -78,7 +97,7 @@ int main(void) {
 	fifoWaitValue32(FIFO_USER_01);
 	// If Arm9 reported slot is powered off, have Arm7 wait for Arm9 to be ready before card reset. This makes sure arm7 doesn't try card reset too early.
 	if(fifoCheckValue32(FIFO_USER_02)) { 
-		if(fifoCheckValue32(FIFO_USER_07)) { dsi_resetSlot1(); } else { PowerOnSlot(); }
+		if(fifoCheckValue32(FIFO_USER_07)) { TWL_ResetSlot1(); } else { PowerOnSlot(); }
 	}
 	fifoSendValue32(FIFO_USER_03, 1);
 	
